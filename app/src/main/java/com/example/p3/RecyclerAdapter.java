@@ -18,12 +18,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         mData = list;
     }
 
-    @NonNull
+    @NonNull //null을 허용하지 않는 경우
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext() ;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) ;
-
+        //inflater는 xml로 정의된 view를 실제 객체화 시키는 용도
         View view = inflater.inflate(R.layout.recycler_item, parent, false) ;
         RecyclerAdapter.ViewHolder vh = new RecyclerAdapter.ViewHolder(view) ;
 

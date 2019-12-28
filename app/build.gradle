@@ -5,7 +5,9 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.example.p3"
-        minSdkVersion 23
+
+        minSdkVersion 26
+
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -29,4 +31,5 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.simplecityapps:recyclerview-fastscroll:2.0.0'
+    implementation "gun0912.ted:tedpermission:2.1.0"
 }
