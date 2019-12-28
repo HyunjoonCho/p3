@@ -1,7 +1,9 @@
 package com.example.p3;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.ContentResolver;
@@ -12,6 +14,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.GridView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,6 +23,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class TabOneActivity extends AppCompatActivity {
 
@@ -29,15 +33,16 @@ public class TabOneActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.tab1_layout);
 
         //jsonParsing(getJsonString());
+        getContacts();
 
         RecyclerView myRecycler = findViewById(R.id.tab1_recyclerview);
-        RecyclerView.LayoutManager myLayoutmgr = new LinearLayoutManager(this);
+        CustomLayoutManager myLayoutmgr = new CustomLayoutManager(this);
 
-        TabOneRecyclerAdapter myAdapter = new TabOneRecyclerAdapter(getContacts());
+        TabOneRecyclerAdapter myAdapter = new TabOneRecyclerAdapter(items);
         myRecycler.setLayoutManager(myLayoutmgr);
         myRecycler.setAdapter(myAdapter);
     }
@@ -91,8 +96,7 @@ public class TabOneActivity extends AppCompatActivity {
     }
 
 
-    public ArrayList<TabOneRecyclerItem> getContacts(){
-        ArrayList<TabOneRecyclerItem> datas = new ArrayList<>();
+    public void getContacts(){
 
         Cursor cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
 
@@ -102,10 +106,35 @@ public class TabOneActivity extends AppCompatActivity {
                 item.setName(cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)));
                 item.setPhonenum(cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
 
-                datas.add(item);
+                items.add(item);
+                Collections.sort(items);
+
             }
         }
         cursor.close();
-        return datas;
+    }
+
+    public static String cutString(String str, int len) {
+
+        byte[] by = str.getBytes();
+        int count = 0;
+        try  {
+            for(int i = 0; i < len; i++) {
+
+                if((by[i] & 0x80) == 0x80) count++; // 핵심 코드
+
+            }
+
+            if((by[len - 1] & 0x80) == 0x80 && (count % 2) == 1) len--; // 핵심코드
+
+            return new String(by, 0, len);
+
+        }
+        catch(java.lang.ArrayIndexOutOfBoundsException e)
+        {
+            System.out.println(e);
+            return "";
+        }
+
     }
 }

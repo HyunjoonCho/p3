@@ -6,4 +6,5 @@
     <color name="tab1background">#d6e6f0</color>
     <color name="tab2background">#b5d692</color>
     <color name="tab3background">#a3cca3</color>
+    <color name="white">#FFFFFF</color>
 </resources>

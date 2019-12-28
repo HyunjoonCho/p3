@@ -2,7 +2,7 @@ package com.example.p3;
 
 import android.media.Image;
 
-public class TabOneRecyclerItem {
+public class TabOneRecyclerItem implements Comparable<TabOneRecyclerItem>{
     private String name;
     private String phonenum;
 
@@ -23,5 +23,10 @@ public class TabOneRecyclerItem {
 
     public void setPhonenum(String phonenum) {
         this.phonenum = phonenum;
+    }
+
+    @Override
+    public int compareTo(TabOneRecyclerItem o) {
+        return name.compareTo(o.getName());
     }
 }

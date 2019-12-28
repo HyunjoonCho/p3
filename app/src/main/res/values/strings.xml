@@ -3,4 +3,6 @@
     <string name="tab1_name">Tab 1</string>
     <string name="tab2_name">Tab 2</string>
     <string name="tab3_name">Tab 3</string>
+    <string name="tab1_image">tab1_img</string>
+    <string name="contacts_search">연락처 검색</string>
 </resources>
