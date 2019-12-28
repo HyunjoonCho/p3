@@ -25,6 +25,25 @@ public class Gallery extends AppCompatActivity {
         addItem(getDrawable(R.drawable.image1));
         addItem(getDrawable(R.drawable.image2));
         addItem(getDrawable(R.drawable.image3));
+        addItem(getDrawable(R.drawable.image4));
+        addItem(getDrawable(R.drawable.image5));
+        addItem(getDrawable(R.drawable.image6));
+        addItem(getDrawable(R.drawable.image7));
+        addItem(getDrawable(R.drawable.image8));
+        addItem(getDrawable(R.drawable.image9));
+        addItem(getDrawable(R.drawable.image10));
+        addItem(getDrawable(R.drawable.image11));
+        addItem(getDrawable(R.drawable.image12));
+        addItem(getDrawable(R.drawable.image13));
+        addItem(getDrawable(R.drawable.image14));
+        addItem(getDrawable(R.drawable.image15));
+        addItem(getDrawable(R.drawable.image16));
+        addItem(getDrawable(R.drawable.image18));
+        addItem(getDrawable(R.drawable.image19));
+        addItem(getDrawable(R.drawable.image20));
+        addItem(getDrawable(R.drawable.image23));
+        addItem(getDrawable(R.drawable.image24));
+        addItem(getDrawable(R.drawable.image25));
 
 
         mRecyclerView = findViewById(R.id.recycler1);
