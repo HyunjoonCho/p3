@@ -1,5 +1,6 @@
 package com.example.p3;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -28,17 +29,17 @@ import android.widget.ImageView;
 
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
-
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
+
 
 
 
@@ -48,11 +49,56 @@ public class Gallery extends AppCompatActivity {
     RecyclerAdapter mAdapter = null ;
     ArrayList<RecyclerItem> mList = new ArrayList<RecyclerItem>();
 
+    public static Bitmap rotateBitmap(Bitmap bitmap, int orientation) {
 
-    public ArrayList<Bitmap> getUriArray(){
+        Matrix matrix = new Matrix();
+        switch (orientation) {
+            case ExifInterface.ORIENTATION_NORMAL:
+                return bitmap;
+            case ExifInterface.ORIENTATION_FLIP_HORIZONTAL:
+                matrix.setScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                matrix.setRotate(180);
+                break;
+            case ExifInterface.ORIENTATION_FLIP_VERTICAL:
+                matrix.setRotate(180);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_TRANSPOSE:
+                matrix.setRotate(90);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                matrix.setRotate(90);
+                break;
+            case ExifInterface.ORIENTATION_TRANSVERSE:
+                matrix.setRotate(-90);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                matrix.setRotate(-90);
+                break;
+            default:
+                return bitmap;
+        }
+        try {
+            Bitmap bmRotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+            bitmap.recycle();
+            return bmRotated;
+        }
+        catch (OutOfMemoryError e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+
+    public void getUriArray(){
         String[] projection = {MediaStore.Images.Media._ID, MediaStore.Images.Media.DATA, MediaStore.Images.Media.DISPLAY_NAME, MediaStore.Images.Media.SIZE};
         Cursor imageCursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null, null, null);
-        ArrayList<Bitmap> bitmapArrayList = new ArrayList<>();
+
 
         if(imageCursor.moveToFirst()){
             do {
@@ -67,12 +113,21 @@ public class Gallery extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
+                ExifInterface exif = null;
+                try {
+                    exif = new ExifInterface(photoUri.toString());
+                }catch (IOException e) {
+                    e.printStackTrace();
+                }
+                int orientation = 6;
+                bitmap = rotateBitmap(bitmap, orientation);
+
                 Drawable new_img = new BitmapDrawable(bitmap);
                 addItem(new_img);
 
             }while (imageCursor.moveToNext());
         }
-        return bitmapArrayList;
+
     }
 
 
