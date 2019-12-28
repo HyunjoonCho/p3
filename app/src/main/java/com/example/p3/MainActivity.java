@@ -16,6 +16,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
+
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     Button tab1;
@@ -23,7 +28,9 @@ public class MainActivity extends AppCompatActivity {
     Button tab3;
     String[] permission_list = {
             Manifest.permission.WRITE_CONTACTS,
-            Manifest.permission.READ_CONTACTS
+            Manifest.permission.READ_CONTACTS,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.CAMERA
     };
 
     @Override
