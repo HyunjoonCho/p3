@@ -22,7 +22,7 @@
 
         <activity android:name=".TabOneActivity"
             android:theme="@style/customstyle" ></activity>
-        <activity android:name=".TabTwoActivity"
+        <activity android:name=".Gallery"
             android:theme="@style/customstyle" ></activity>
 
     </application>
