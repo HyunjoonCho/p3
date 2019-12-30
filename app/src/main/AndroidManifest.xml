@@ -27,6 +27,7 @@
             android:theme="@style/customstyle" ></activity>
         <activity android:name=".Gallery"
             android:theme="@style/customstyle" ></activity>
+        <activity android:name=".SubActivity"/>
 
     </application>
 
