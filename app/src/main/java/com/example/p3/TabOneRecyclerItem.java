@@ -7,8 +7,7 @@ import java.io.Serializable;
 public class TabOneRecyclerItem implements Comparable<TabOneRecyclerItem>, Serializable {
     private String name;
     private String phonenum;
-    private String image_uri;
-    private int changed = 0;
+    private byte[] profile;
 
     public TabOneRecyclerItem(){
     }
@@ -29,17 +28,12 @@ public class TabOneRecyclerItem implements Comparable<TabOneRecyclerItem>, Seria
         this.phonenum = phonenum;
     }
 
-    public String getImage_uri() {
-        return image_uri;
+    public byte[] getProfile() {
+        return profile;
     }
 
-    public void setImage_uri(String image_uri) {
-        this.changed = 1;
-        this.image_uri = image_uri;
-    }
-
-    public int getChanged() {
-        return changed;
+    public void setProfile(byte[] profile) {
+        this.profile = profile;
     }
 
     @Override

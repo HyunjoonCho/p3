@@ -1,6 +1,7 @@
 package com.example.p3;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,8 +13,6 @@ import android.widget.ImageButton;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 
 public class TabOneSearchActivity extends AppCompatActivity {
@@ -39,6 +38,14 @@ public class TabOneSearchActivity extends AppCompatActivity {
 
         CustomLayoutManager myLayoutmgr = new CustomLayoutManager(this);
         myAdapter = new TabOneSearchRecyclerAdapter(searchitems);
+        myAdapter.setOnItemClickListener(new TabOneSearchRecyclerAdapter.OnItemsearchClickListener() {
+            @Override
+            public void OnItemClick(View v, int position) {
+                Intent intent = new Intent(getApplicationContext(),TabOneRecordAcitivity.class);
+                intent.putExtra("recorditem",searchitems.get(position));
+                startActivity(intent);
+            }
+        });
         myRecycler.setLayoutManager(myLayoutmgr);
         myRecycler.setAdapter(myAdapter);
 
@@ -78,6 +85,7 @@ public class TabOneSearchActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
 
     }
 
