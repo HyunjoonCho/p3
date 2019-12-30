@@ -6,9 +6,10 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class RecyclerItem{
+public class RecyclerItem implements Serializable {
     private Drawable iconDrawable;
 
     public void setIcon(Drawable icon){

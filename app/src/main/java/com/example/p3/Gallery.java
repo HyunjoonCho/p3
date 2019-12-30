@@ -1,15 +1,10 @@
 package com.example.p3;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.Manifest;
-import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,22 +16,8 @@ import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
-import android.util.Size;
-import androidx.annotation.RequiresApi;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 
-import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.TedPermission;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -145,13 +126,22 @@ public class Gallery extends AppCompatActivity {
         // 사진추가
         addItem(getDrawable(R.drawable.water));
         addItem(getDrawable(R.drawable.fall));
-        addItem(getDrawable(R.drawable.image1));
-        addItem(getDrawable(R.drawable.image2));
-        addItem(getDrawable(R.drawable.image3));
-        addItem(getDrawable(R.drawable.image4));
-        addItem(getDrawable(R.drawable.image5));
-        addItem(getDrawable(R.drawable.image6));
-        addItem(getDrawable(R.drawable.image7));
+        //addItem(getDrawable(R.drawable.image1));
+        //addItem(getDrawable(R.drawable.image2));
+        //addItem(getDrawable(R.drawable.image3));
+        //addItem(getDrawable(R.drawable.image4));
+        //addItem(getDrawable(R.drawable.image5));
+        //addItem(getDrawable(R.drawable.image6));
+        //addItem(getDrawable(R.drawable.image7));
+        addItem(getDrawable(R.drawable.image26));
+        addItem(getDrawable(R.drawable.image27));
+        addItem(getDrawable(R.drawable.image28));
+        addItem(getDrawable(R.drawable.image29));
+        addItem(getDrawable(R.drawable.image30));
+        addItem(getDrawable(R.drawable.image31));
+        addItem(getDrawable(R.drawable.image33));
+        addItem(getDrawable(R.drawable.image35));
+        addItem(getDrawable(R.drawable.image36));
         addItem(getDrawable(R.drawable.image8));
         addItem(getDrawable(R.drawable.image9));
         addItem(getDrawable(R.drawable.image10));
@@ -171,7 +161,7 @@ public class Gallery extends AppCompatActivity {
         getUriArray();
 
         mRecyclerView = findViewById(R.id.recycler1);
-        mAdapter = new RecyclerAdapter(mList);
+        mAdapter = new RecyclerAdapter(mList,getApplicationContext());
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 4));
         mRecyclerView.addItemDecoration(new MovieItemDecoration(this));
