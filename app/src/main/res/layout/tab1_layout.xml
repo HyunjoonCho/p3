@@ -2,18 +2,128 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:transitionName="custom_transition"
-    android:background="@drawable/tab1_edge_color">
+    android:background="@color/white">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/tab1_recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <androidx.cardview.widget.CardView
+        xmlns:card_view="http//schemas.android.com/apk/res-auto"
+        android:id="@+id/tab1_cardview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toTopOf="@id/tab1_guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        card_view:cardCornerRadius="20dp">
 
-    </androidx.recyclerview.widget.RecyclerView>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+            <ImageButton
+                android:contentDescription="@string/tab1_image"
+                android:id="@+id/tab1_title_img1"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@color/white"
+                android:foreground="?attr/selectableItemBackground"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tab1_title_guideline_v1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/baseline_menu_black_18dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/tab1_title_guideline_v1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.14" />
+
+            <TextView
+                android:id="@+id/tab1_title_txt"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@color/white"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="@string/contacts_search"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tab1_title_guideline_v2"
+                app:layout_constraintStart_toEndOf="@id/tab1_title_guideline_v1"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/tab1_title_guideline_v2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.72" />
+
+            <ImageButton
+                android:contentDescription="@string/tab1_image"
+                android:id="@+id/tab1_title_img2"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@color/white"
+                android:foreground="?attr/selectableItemBackground"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tab1_title_guideline_v3"
+                app:layout_constraintStart_toEndOf="@id/tab1_title_guideline_v2"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/baseline_more_vert_black_18dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/tab1_title_guideline_v3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.86" />
+
+            <ImageButton
+                android:contentDescription="@string/tab1_image"
+                android:id="@+id/tab1_title_img3"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@color/white"
+                android:foreground="?attr/selectableItemBackground"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tab1_title_guideline_v3"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/baseline_person_black_18dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/tab1_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="51dp" />
+
+    <com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
+        android:id="@+id/tab1_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tab1_guideline"
+
+        app:fastScrollPopupBgColor="#007FFF"
+        app:fastScrollPopupTextColor="@android:color/primary_text_dark"
+
+        app:fastScrollPopupBackgroundSize="70dp"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

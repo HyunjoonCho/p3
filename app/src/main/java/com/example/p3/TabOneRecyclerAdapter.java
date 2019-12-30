@@ -7,13 +7,21 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
+
 import java.util.ArrayList;
 
-public class TabOneRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class TabOneRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements FastScrollRecyclerView.SectionedAdapter {
     ArrayList<TabOneRecyclerItem> items;
 
     public TabOneRecyclerAdapter(ArrayList<TabOneRecyclerItem> items){
         this.items = items;
+    }
+
+    @NonNull
+    @Override
+    public String getSectionName(int position) {
+        return items.get(position).getName().substring(0,1);
     }
 
     @NonNull
@@ -27,7 +35,6 @@ public class TabOneRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         TabOneRecyclerViewHolder tab1viewholder = (TabOneRecyclerViewHolder)holder;
         tab1viewholder.tv_name.setText(items.get(position).getName());
-        tab1viewholder.tv_phonenum.setText(items.get(position).getPhonenum());
     }
 
     @Override

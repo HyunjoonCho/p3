@@ -3,7 +3,12 @@
     <string name="tab1_name">Tab 1</string>
     <string name="tab2_name">Tab 2</string>
     <string name="tab3_name">Tab 3</string>
+<<<<<<< HEAD
+    <string name="tab1_image">tab1_img</string>
+    <string name="contacts_search">연락처 검색</string>
+=======
 
     <string name="permission_1">[설정] > [권한] 에서 권한을 허용할 수 있습니다.</string>
     <string name="permission_2">사진 및 파일을 저장하기 위하여 접근 권한이 필요합니다.</string>
+>>>>>>> ce5c5553bb5491c909e19f22f20592bbdffd0eaa
 </resources>
