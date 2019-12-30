@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
     private ArrayList<RecyclerItem> mData = null;
 
+
     RecyclerAdapter(ArrayList<RecyclerItem> list){
         mData = list;
     }
@@ -32,7 +33,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(RecyclerAdapter.ViewHolder holder, int position) {
-
+        // 이줄 근처에서 연동
         RecyclerItem item = mData.get(position) ;
 
         holder.icon.setImageDrawable(item.getIcon()) ;
