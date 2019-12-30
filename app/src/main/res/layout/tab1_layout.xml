@@ -2,26 +2,24 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:transitionName="custom_transition"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:transitionName="custom_transition">
 
     <androidx.cardview.widget.CardView
-        xmlns:card_view="http//schemas.android.com/apk/res-auto"
         android:id="@+id/tab1_cardview"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginTop="5dp"
+        android:layout_marginEnd="8dp"
         android:background="@color/white"
         app:layout_constraintBottom_toTopOf="@id/tab1_guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        card_view:cardCornerRadius="20dp">
+        app:cardCornerRadius="10dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -29,11 +27,11 @@
             android:background="@color/white">
 
             <ImageButton
-                android:contentDescription="@string/tab1_image"
                 android:id="@+id/tab1_title_img1"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="@color/white"
+                android:contentDescription="@string/tab1_image"
                 android:foreground="?attr/selectableItemBackground"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/tab1_title_guideline_v1"
@@ -53,13 +51,16 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="@color/white"
-                android:foreground="?attr/selectableItemBackground"
-                android:gravity="center_horizontal|center_vertical"
+                android:gravity="center_vertical"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:text="@string/contacts_search"
+                android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/tab1_title_guideline_v2"
                 app:layout_constraintStart_toEndOf="@id/tab1_title_guideline_v1"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:transitionName="custom_transition3"/>
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/tab1_title_guideline_v2"
@@ -69,11 +70,11 @@
                 app:layout_constraintGuide_percent="0.72" />
 
             <ImageButton
-                android:contentDescription="@string/tab1_image"
                 android:id="@+id/tab1_title_img2"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="@color/white"
+                android:contentDescription="@string/tab1_image"
                 android:foreground="?attr/selectableItemBackground"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/tab1_title_guideline_v3"
@@ -89,11 +90,11 @@
                 app:layout_constraintGuide_percent="0.86" />
 
             <ImageButton
-                android:contentDescription="@string/tab1_image"
                 android:id="@+id/tab1_title_img3"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="@color/white"
+                android:contentDescription="@string/tab1_image"
                 android:foreground="?attr/selectableItemBackground"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -116,14 +117,29 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
 
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="5dp"
+        app:fastScrollPopupBackgroundSize="70dp"
+        app:fastScrollPopupBgColor="@color/contactscolor"
+
+        app:fastScrollPopupTextColor="@android:color/primary_text_dark"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tab1_guideline"
+        app:layout_constraintTop_toTopOf="@+id/tab1_guideline" />
 
-        app:fastScrollPopupBgColor="#007FFF"
-        app:fastScrollPopupTextColor="@android:color/primary_text_dark"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/tab1_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        app:backgroundTint="@color/contactscolor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/baseline_add_white_24dp" />
 
-        app:fastScrollPopupBackgroundSize="70dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

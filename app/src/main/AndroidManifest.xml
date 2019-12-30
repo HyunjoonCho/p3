@@ -27,7 +27,10 @@
             android:theme="@style/customstyle" ></activity>
         <activity android:name=".Gallery"
             android:theme="@style/customstyle" ></activity>
-
+        <activity android:name=".TabOneSearchActivity"
+            android:theme="@style/customstyle" ></activity>
+        <activity android:name=".TabOneCreateActivity"
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>

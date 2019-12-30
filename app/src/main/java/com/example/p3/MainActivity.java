@@ -42,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
 
         checkPermission();
 
+
+
         tab1 = findViewById(R.id.main_tab1);
         tab1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,16 +63,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent, options.toBundle());
             }
         });
-/*
-        findViewById(R.id.main_tab3).setOnClickListener(new View.OnClickListener() {
+
+        /*findViewById(R.id.main_tab3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), TabOneActivity.class);
-                startActivity(intent);
+                UnicodeHandler uh = new UnicodeHandler();
+                Toast.makeText(getApplicationContext(),uh.splitHangeulDemo(""),Toast.LENGTH_LONG).show();
             }
-        });
-
-         */
+        });*/
     }
 
     public void checkPermission(){
