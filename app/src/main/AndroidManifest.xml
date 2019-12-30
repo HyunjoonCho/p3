@@ -27,15 +27,15 @@
             android:theme="@style/customstyle" ></activity>
         <activity android:name=".Gallery"
             android:theme="@style/customstyle" ></activity>
-<<<<<<< HEAD
+
         <activity android:name=".SubActivity"/>
 
-=======
+
         <activity android:name=".TabOneSearchActivity"
             android:theme="@style/customstyle" ></activity>
         <activity android:name=".TabOneCreateActivity"
             android:theme="@style/AppTheme"/>
->>>>>>> 61dc43b8c677c254c9dff4c928f94d60848c1a24
+
     </application>
 
 </manifest>

@@ -32,10 +32,10 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.simplecityapps:recyclerview-fastscroll:2.0.0'
     implementation "gun0912.ted:tedpermission:2.1.0"
-<<<<<<< HEAD
 
-=======
+
+
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'de.hdodenhof:circleimageview:3.0.0'
->>>>>>> 61dc43b8c677c254c9dff4c928f94d60848c1a24
+
 }
