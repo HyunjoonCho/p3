@@ -2,6 +2,7 @@ package com.example.p3;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,7 +40,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-
 
 
 
@@ -138,7 +138,9 @@ public class Gallery extends AppCompatActivity {
         //super.oncreate는 이미 appcompatactivity에 있는 oncreate기능을 받아오고 거기에 추가하는 느낌.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_main);
-
+        //action 바 없애기
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 
         // 사진추가
         addItem(getDrawable(R.drawable.water));
