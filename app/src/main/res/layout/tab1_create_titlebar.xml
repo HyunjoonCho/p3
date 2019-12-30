@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_vertical"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageButton
+        android:id="@+id/tab1_create_title_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/white"
+        android:foreground="?attr/selectableItemBackground"
+        app:srcCompat="@drawable/baseline_close_black_24dp" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_toEndOf="@id/tab1_create_title_close"
+        android:gravity="center_vertical"
+        android:paddingStart="15dp"
+        android:text="연락처 만들기"
+        android:textColor="#000000"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/tab1_create_title_save"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_alignParentEnd="true"
+        android:background="@color/white"
+        android:gravity="center_horizontal|center_vertical"
+        android:foreground="?attr/selectableItemBackground"
+        android:text="저장"
+        android:textColor="@color/contactscolor"
+        android:textStyle="bold" />
+</RelativeLayout>
