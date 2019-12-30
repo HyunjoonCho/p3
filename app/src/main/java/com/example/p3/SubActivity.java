@@ -5,13 +5,14 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.ViewSwitcher;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.security.cert.PKIXRevocationChecker;
 import java.util.ArrayList;
 
-public class SubActivity extends AppCompatActivity {
+public class SubActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,7 @@ public class SubActivity extends AppCompatActivity {
         ImageView imageView = findViewById(R.id.imageView);
         Intent intent = getIntent();
         Bitmap bitmap = intent.getParcelableExtra("image");
+
         imageView.setImageBitmap(bitmap);
     }
 }

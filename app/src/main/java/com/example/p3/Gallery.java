@@ -16,6 +16,7 @@ import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.WindowManager;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -88,9 +89,10 @@ public class Gallery extends AppCompatActivity {
 
                 Bitmap bitmap = null;
                 try{
-                    InputStream ims = getContentResolver().openInputStream(photoUri);
-                    bitmap = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeStream(ims),125,128);
-                } catch (FileNotFoundException e) {
+                    //InputStream ims = getContentResolver().openInputStream(photoUri);
+                    //bitmap = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeStream(ims),125,128);
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),photoUri);
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
 
@@ -118,8 +120,11 @@ public class Gallery extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         //super.oncreate는 이미 appcompatactivity에 있는 oncreate기능을 받아오고 거기에 추가하는 느낌.
         super.onCreate(savedInstanceState);
+        //상태바 없애기
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.content_main);
-        //action 바 없애기
+        //타이틀바 없애기
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
