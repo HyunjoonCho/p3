@@ -49,6 +49,16 @@ public class TabOneActivity extends AppCompatActivity {
         CustomLayoutManager myLayoutmgr = new CustomLayoutManager(this);
 
         myAdapter = new TabOneRecyclerAdapter(items);
+
+        myAdapter.setOnItemClickListener(new TabOneRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void OnItemClick(View v, int position) {
+                Intent intent = new Intent(getApplicationContext(),TabOneRecordAcitivity.class);
+                intent.putExtra("recorditem",items.get(position));
+                startActivity(intent);
+            }
+        });
+
         myRecycler.setLayoutManager(myLayoutmgr);
         myRecycler.setAdapter(myAdapter);
 
@@ -148,6 +158,7 @@ public class TabOneActivity extends AppCompatActivity {
         if(requestCode == CREATE_NEW_CONTACT){
             if(resultCode == RESULT_OK){
                 items.add((TabOneRecyclerItem)data.getSerializableExtra("item"));
+                Collections.sort(items);
                 myAdapter.notifyDataSetChanged();
             }
         }

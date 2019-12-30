@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/tab1_record_inform_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/tab1_record_boundary_bottom"
+        app:layout_constraintBottom_toTopOf="@+id/tab1_record_guideline_h4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tab1_record_guideline_h3" >
+
+        <ImageView
+            android:id="@+id/tab1_record_img1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/baseline_call_black_24dp" />
+
+        <TextView
+            android:id="@+id/tab1_record_phonenum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="010-5761-0716"
+            android:textColor="#000000"
+            app:layout_constraintBottom_toTopOf="@+id/tab1_record_txt1"
+            app:layout_constraintStart_toEndOf="@+id/tab1_record_img1"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tab1_record_txt1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="8dp"
+            android:text="휴대전화"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tab1_record_img1"
+            app:layout_constraintTop_toBottomOf="@+id/tab1_record_phonenum" />
+
+        <ImageButton
+            android:id="@+id/tab1_record_msg_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/baseline_chat_black_24dp"
+            android:background="@color/white"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/tab1_record_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#DADADA"
+        android:clickable="false"
+        android:src="@drawable/baseline_person_black_36dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/tab1_record_guideline_h1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tab1_record_guideline_h0" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/tab1_record_guideline_h0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="50dp"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/tab1_record_guideline_h1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="268dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/tab1_record_guideline_h2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="318dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/tab1_record_guideline_h3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="400dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/tab1_record_guideline_h4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="470dp" />
+
+    <TextView
+        android:id="@+id/tab1_record_name"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:text="우희중"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/tab1_record_guideline_h2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tab1_record_guideline_h1" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/tab1_record_button_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/tab1_record_boundary"
+        app:layout_constraintBottom_toTopOf="@+id/tab1_record_guideline_h3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tab1_record_guideline_h2">
+
+        <ImageButton
+            android:id="@+id/tab1_record_call_img1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/white"
+            android:foreground="?attr/selectableItemBackground"
+            android:padding="10dp"
+            android:src="@drawable/baseline_call_black_24dp"
+            app:layout_constraintBottom_toTopOf="@+id/tab1_record_call_txt1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tab1_record_call_txt1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="88dp"
+            android:layout_marginBottom="16dp"
+            android:background="@color/white"
+            android:text="통화"
+            android:textColor="@color/contactscolor"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tab1_record_call_img1" />
+
+        <ImageButton
+            android:id="@+id/tab1_record_msg_img1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@color/white"
+            android:foreground="?attr/selectableItemBackground"
+            android:padding="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/tab1_record_msg_txt1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/baseline_chat_black_24dp" />
+
+        <TextView
+            android:id="@+id/tab1_record_msg_txt1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@color/white"
+            android:text="문자 메시지"
+            android:textColor="@color/contactscolor"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tab1_record_msg_img1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/tab1_record_updatebtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="@color/contactscolor"
+        android:src="@drawable/baseline_create_white_24dp" />
+
+    <ImageButton
+        android:id="@+id/tab1_record_backbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:background="@color/white"
+        android:foreground="?attr/selectableItemBackground"
+        android:src="@drawable/baseline_arrow_back_black_24dp"
+        app:layout_constraintBottom_toTopOf="@+id/tab1_record_guideline_h0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tab1_record_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="35dp"
+        android:text="연락처 정보"
+        android:textColor="#1F1F1F"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/tab1_record_guideline_h0"
+        app:layout_constraintStart_toEndOf="@+id/tab1_record_backbtn"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
