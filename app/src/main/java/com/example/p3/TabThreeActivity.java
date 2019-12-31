@@ -13,6 +13,7 @@ public class TabThreeActivity extends AppCompatActivity {
 
     Button lockbtn;
     Button unlockbtn;
+    Intent service_intent = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,19 +26,23 @@ public class TabThreeActivity extends AppCompatActivity {
         lockbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), TabThreeScreenService.class);
-                if (Build.VERSION.SDK_INT >= 26)
-                    startForegroundService(intent);
-                else
-                    startService(intent);
+                if (service_intent == null) {
+                    service_intent = new Intent(getApplicationContext(), TabThreeScreenService.class);
+                    if (Build.VERSION.SDK_INT >= 26)
+                        startForegroundService(service_intent);
+                    else
+                        startService(service_intent);
+                }
             }
         });
 
         unlockbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), TabThreeScreenService.class);
-                stopService(intent);
+                if (service_intent != null) {
+                    service_intent.putExtra("turnoff", 2);
+                    stopService(service_intent);
+                }
             }
         });
     }
