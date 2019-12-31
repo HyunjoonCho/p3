@@ -170,6 +170,7 @@ public class Gallery extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 4));
         mRecyclerView.addItemDecoration(new MovieItemDecoration(this));
+        mRecyclerView.setNestedScrollingEnabled(false);
         mAdapter.notifyDataSetChanged();
 
         }

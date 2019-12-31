@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA,
-            Manifest.permission.FOREGROUND_SERVICE,
+            //Manifest.permission.FOREGROUND_SERVICE,
             Manifest.permission.READ_PHONE_STATE
     };
 
