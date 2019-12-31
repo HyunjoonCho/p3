@@ -100,9 +100,7 @@ public class MainActivity extends AppCompatActivity {
             for(int i=0; i<grantResults.length; i++)
             {
                 //허용됬다면
-                if(grantResults[i]== PackageManager.PERMISSION_GRANTED){
-                }
-                else {
+                if(grantResults[i]!= PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(getApplicationContext(),"앱권한설정하세요", Toast.LENGTH_LONG).show();
                     finish();
                 }

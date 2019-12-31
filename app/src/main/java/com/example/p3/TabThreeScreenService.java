@@ -31,9 +31,15 @@ public class TabThreeScreenService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        mReceiver = new TabThreeScreenReceiver();
-        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
-        registerReceiver(mReceiver, filter);
+        //Intent screenIntent = new Intent(getApplicationContext(),TabThreeScreenReceiver.class);
+        //PendingIntent.getBroadcast(getApplicationContext(),0,screenIntent,PendingIntent.FLAG_NO_CREATE);
+        //PendingIntent screenSender = PendingIntent.getBroadcast(getApplicationContext(),0,screenIntent,PendingIntent.FLAG_NO_CREATE);
+        //if(screenSender == null){
+        if(mReceiver == null){
+            mReceiver = new TabThreeScreenReceiver();
+            IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
+            registerReceiver(mReceiver, filter);
+        }
     }
 
     @Override
