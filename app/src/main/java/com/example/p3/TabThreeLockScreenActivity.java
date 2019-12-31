@@ -36,7 +36,7 @@ public class TabThreeLockScreenActivity extends AppCompatActivity {
                 String answer_text = editText.getText().toString();
                 //Toast.makeText(getApplicationContext(),answer_text + "\n"+quizes[r],Toast.LENGTH_SHORT).show();
                 if(actionId == EditorInfo.IME_ACTION_DONE&& answer_text.equals(quizes[r]) ){
-                    Toast.makeText(getApplicationContext(),"정답!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"정답!",Toast.LENGTH_SHORT).show();
                     finish();
                     return true;
                 }else{

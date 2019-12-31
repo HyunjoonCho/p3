@@ -30,7 +30,7 @@ public class TabThreeScreenService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        
+
         mReceiver = new TabThreeScreenReceiver();
         IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
         registerReceiver(mReceiver, filter);
