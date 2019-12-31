@@ -32,7 +32,9 @@
             android:theme="@style/customstyle" ></activity>
         <activity android:name=".TabOneCreateActivity"
             android:theme="@style/actionbarstyle"/>
-        <activity android:name=".TabOneRecordAcitivity"
+        <activity android:name=".TabOneRecordActivity"
+            android:theme="@style/actionbarstyle"/>
+        <activity android:name=".TabOneUpdateActivity"
             android:theme="@style/actionbarstyle"/>
     </application>
 

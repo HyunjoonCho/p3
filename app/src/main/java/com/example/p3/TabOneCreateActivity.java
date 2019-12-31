@@ -39,6 +39,7 @@ public class TabOneCreateActivity extends AppCompatActivity {
     private AlertDialog.Builder builder;
     private FloatingActionButton camera_fab;
     private Bitmap profile_bitmap = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -154,7 +155,6 @@ public class TabOneCreateActivity extends AppCompatActivity {
 
         builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {        //확인 버튼을 생성하고 클릭시 동작을 구현합니다.
             @Override
-
             public void onClick(DialogInterface dialog, int which) {
                 finish();
             }

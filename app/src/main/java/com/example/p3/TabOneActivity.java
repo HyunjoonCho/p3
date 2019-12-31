@@ -1,15 +1,15 @@
 package com.example.p3;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ActivityOptions;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.View;
@@ -30,10 +30,14 @@ import java.util.Collections;
 public class TabOneActivity extends AppCompatActivity {
 
     private final static int CREATE_NEW_CONTACT = 1;
+    private final static int UPDATE_CONTACT = 2;
+    private final static int UPDATE_CONTACT_FROM_RECORD = 20;
+    private final static int DELETE_RESULT_CODE = 40;
 
     TabOneRecyclerAdapter myAdapter;
     ArrayList<TabOneRecyclerItem> items = new ArrayList<>();
     CardView cv;
+    private AlertDialog.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +57,36 @@ public class TabOneActivity extends AppCompatActivity {
         myAdapter.setOnItemClickListener(new TabOneRecyclerAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(View v, int position) {
-                Intent intent = new Intent(getApplicationContext(),TabOneRecordAcitivity.class);
+                Intent intent = new Intent(getApplicationContext(), TabOneRecordActivity.class);
                 intent.putExtra("recorditem",items.get(position));
-                startActivity(intent);
+                intent.putExtra("position",position);
+                startActivityForResult(intent, UPDATE_CONTACT);
+            }
+        });
+
+        myAdapter.setOnListItemLongSelectedListener(new TabOneRecyclerAdapter.OnListItemLongSelectedInterface() {
+            @Override
+            public void onItemLongSelected(View v, final int position) {
+                builder = new AlertDialog.Builder(TabOneActivity.this);       //Builder을 먼저 생성하여 옵션을 설정합니다.
+                builder.setTitle("삭제");                                                                //타이틀을 지정합니다.
+                builder.setMessage("확인을 누르시면 정보가 삭제됩니다.");
+
+                builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {        //확인 버튼을 생성하고 클릭시 동작을 구현합니다.
+                    @Override
+
+                    public void onClick(DialogInterface dialog, int which) {
+                        myAdapter.getItems().remove(position);
+                        myAdapter.notifyDataSetChanged();
+                    }
+                });
+
+                builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {       //취소 버튼을 생성하고 클릭시 동작을 구현합니다.
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //donothing
+                    }
+                });
+                builder.create().show();
             }
         });
 
@@ -70,7 +101,7 @@ public class TabOneActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), TabOneSearchActivity.class);
                 intent.putExtra("items",items);
                 ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(TabOneActivity.this,cv,"custom_transition3");
-                startActivity(intent, options.toBundle());
+                startActivityForResult(intent,UPDATE_CONTACT_FROM_RECORD,options.toBundle());
             }
         });
 
@@ -161,6 +192,22 @@ public class TabOneActivity extends AppCompatActivity {
                 Collections.sort(items);
                 myAdapter.notifyDataSetChanged();
             }
+        }else if(requestCode == UPDATE_CONTACT && resultCode == RESULT_OK && data != null){
+            TabOneRecyclerItem update_item = (TabOneRecyclerItem)data.getSerializableExtra("updateditem");
+            int pos = data.getIntExtra("position",1);
+            myAdapter.getItems().get(pos).setName(update_item.getName());
+            myAdapter.getItems().get(pos).setPhonenum(update_item.getPhonenum());
+            myAdapter.notifyDataSetChanged();
+        }else if(requestCode == UPDATE_CONTACT_FROM_RECORD && resultCode == RESULT_OK && data != null){
+            TabOneRecyclerItem update_item = (TabOneRecyclerItem)data.getSerializableExtra("updateditem");
+            int pos = data.getIntExtra("position",1);
+            myAdapter.getItems().get(pos).setName(update_item.getName());
+            myAdapter.getItems().get(pos).setPhonenum(update_item.getPhonenum());
+            myAdapter.notifyDataSetChanged();
+        }else if(requestCode == UPDATE_CONTACT_FROM_RECORD && resultCode == DELETE_RESULT_CODE && data != null){
+            int pos = data.getIntExtra("position",1);
+            myAdapter.getItems().remove(pos);
+            myAdapter.notifyDataSetChanged();
         }
     }
 }

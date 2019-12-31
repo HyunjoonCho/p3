@@ -13,22 +13,29 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class TabOneRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements FastScrollRecyclerView.SectionedAdapter {
+public class TabOneRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements FastScrollRecyclerView.SectionedAdapter, Serializable {
     ArrayList<TabOneRecyclerItem> items;
     private OnItemClickListener mListener = null;
+    private OnListItemLongSelectedInterface mLongListener = null;
 
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void OnItemClick(View v, int position);
     }
+
+    public interface OnListItemLongSelectedInterface {
+        void onItemLongSelected(View v, int position);
+    }
+
 
     public void setOnItemClickListener(OnItemClickListener listener){
         this.mListener = listener;
     }
-
+    public void setOnListItemLongSelectedListener(OnListItemLongSelectedInterface longSelectedListener) { this.mLongListener = longSelectedListener; }
 
     public TabOneRecyclerAdapter(ArrayList<TabOneRecyclerItem> items){
         this.items = items;
@@ -80,6 +87,21 @@ public class TabOneRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                             mListener.OnItemClick(v,pos);
                 }
             });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    int pos = getAdapterPosition();
+                        if(pos != RecyclerView.NO_POSITION)
+                            if(mLongListener != null)
+                                mLongListener.onItemLongSelected(v, pos);
+                    return false;
+                }
+            });
         }
+    }
+
+    public ArrayList<TabOneRecyclerItem> getItems() {
+        return items;
     }
 }

@@ -1,7 +1,7 @@
 package com.example.p3;
 
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,18 +11,24 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class TabOneSearchActivity extends AppCompatActivity {
 
     EditText editText;
     ImageButton closebtn;
     ImageButton backbtn;
-
+    Intent mainintent;
     ArrayList<TabOneRecyclerItem> searchitems = new ArrayList<>();
+    ArrayList<Integer> position_list = new ArrayList<>();
     TabOneSearchRecyclerAdapter myAdapter;
+    private AlertDialog.Builder builder;
+    private final static int UPDATE_CONTACT = 31;
+    private final static int DELETE_RESULT_CODE = 40;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,17 +41,49 @@ public class TabOneSearchActivity extends AppCompatActivity {
         closebtn = findViewById(R.id.tab1_search_close);
         editText = findViewById(R.id.tab1_search_edittxt);
 
+        mainintent = getIntent();
 
         CustomLayoutManager myLayoutmgr = new CustomLayoutManager(this);
         myAdapter = new TabOneSearchRecyclerAdapter(searchitems);
         myAdapter.setOnItemClickListener(new TabOneSearchRecyclerAdapter.OnItemsearchClickListener() {
             @Override
             public void OnItemClick(View v, int position) {
-                Intent intent = new Intent(getApplicationContext(),TabOneRecordAcitivity.class);
+                Intent intent = new Intent(getApplicationContext(), TabOneRecordActivity.class);
                 intent.putExtra("recorditem",searchitems.get(position));
-                startActivity(intent);
+                intent.putExtra("position",position);
+                startActivityForResult(intent,UPDATE_CONTACT);
             }
         });
+
+        myAdapter.setOnListItemLongSelectedListener(new TabOneSearchRecyclerAdapter.OnListItemLongSelectedInterface() {
+            @Override
+            public void onItemLongSelected(View v, final int position) {
+                builder = new AlertDialog.Builder(TabOneSearchActivity.this);       //Builder을 먼저 생성하여 옵션을 설정합니다.
+                builder.setTitle("삭제");                                                                //타이틀을 지정합니다.
+                builder.setMessage("확인을 누르시면 정보가 삭제됩니다.");
+
+                builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {        //확인 버튼을 생성하고 클릭시 동작을 구현합니다.
+                    @Override
+
+                    public void onClick(DialogInterface dialog, int which) {
+                        myAdapter.getItems().remove(position);
+                        myAdapter.notifyDataSetChanged();
+                        Intent delete_intent = new Intent();
+                        delete_intent.putExtra("position",position_list.get(position));
+                        setResult(DELETE_RESULT_CODE,delete_intent);
+                    }
+                });
+
+                builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {       //취소 버튼을 생성하고 클릭시 동작을 구현합니다.
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //donothing
+                    }
+                });
+                builder.create().show();
+            }
+        });
+
         myRecycler.setLayoutManager(myLayoutmgr);
         myRecycler.setAdapter(myAdapter);
 
@@ -97,10 +135,10 @@ public class TabOneSearchActivity extends AppCompatActivity {
         ArrayList<Character> person_name;
 
         ArrayList<TabOneRecyclerItem> items;
-        Intent intent = getIntent();
-        items = (ArrayList<TabOneRecyclerItem>) intent.getSerializableExtra("items");
+        items = (ArrayList<TabOneRecyclerItem>) mainintent.getSerializableExtra("items");
 
         searchitems.clear();
+        position_list.clear();
 
         if (charText.length() == 0) {
             myAdapter.notifyDataSetChanged();
@@ -112,8 +150,8 @@ public class TabOneSearchActivity extends AppCompatActivity {
             person_name = uh.splitHangeulToConsonant(items.get(i).getName());
             if (comparelist(search_name,person_name))
             {
-                // 검색된 데이터를 리스트에 추가한다.
                 searchitems.add(items.get(i));
+                position_list.add(i);
             }
         }
         myAdapter.notifyDataSetChanged();
@@ -151,5 +189,22 @@ public class TabOneSearchActivity extends AppCompatActivity {
             index++;
         }
         return false;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == UPDATE_CONTACT && resultCode == RESULT_OK && data != null){
+            TabOneRecyclerItem update_item = (TabOneRecyclerItem)data.getSerializableExtra("updateditem");
+            int pos = data.getIntExtra("position",1);
+            myAdapter.getItems().get(pos).setName(update_item.getName());
+            myAdapter.getItems().get(pos).setPhonenum(update_item.getPhonenum());
+            myAdapter.notifyDataSetChanged();
+
+            Intent mainforintent = new Intent();
+            mainforintent.putExtra("updateditem",update_item);
+            mainforintent.putExtra("position",position_list.get(pos));
+            setResult(RESULT_OK,mainforintent);
+        }
     }
 }

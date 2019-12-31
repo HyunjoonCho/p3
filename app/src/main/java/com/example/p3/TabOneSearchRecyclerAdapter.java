@@ -1,7 +1,5 @@
 package com.example.p3;
 
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,22 +8,27 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class TabOneSearchRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class TabOneSearchRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Serializable {
 
     ArrayList<TabOneRecyclerItem> items;
     private OnItemsearchClickListener mListener = null;
+    private OnListItemLongSelectedInterface mLongListener = null;
 
     public interface OnItemsearchClickListener{
         void OnItemClick(View v, int position);
     }
 
-    public void setOnItemClickListener(OnItemsearchClickListener listener){
-        this.mListener = listener;
+    public interface OnListItemLongSelectedInterface {
+        void onItemLongSelected(View v, int position);
     }
+
+    public void setOnItemClickListener(OnItemsearchClickListener listener){ this.mListener = listener; }
+    public void setOnListItemLongSelectedListener(OnListItemLongSelectedInterface longSelectedListener) { this.mLongListener = longSelectedListener; }
 
     public TabOneSearchRecyclerAdapter(ArrayList<TabOneRecyclerItem> items){
         this.items = items;
@@ -69,6 +72,21 @@ public class TabOneSearchRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
                             mListener.OnItemClick(v,pos);
                 }
             });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    int pos = getAdapterPosition();
+                    if(pos != RecyclerView.NO_POSITION)
+                        if(mLongListener != null)
+                            mLongListener.onItemLongSelected(v, pos);
+                    return false;
+                }
+            });
         }
+    }
+
+    public ArrayList<TabOneRecyclerItem> getItems() {
+        return items;
     }
 }
