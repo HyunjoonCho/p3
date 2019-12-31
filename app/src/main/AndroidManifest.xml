@@ -36,6 +36,12 @@
             android:theme="@style/actionbarstyle"/>
         <activity android:name=".TabOneUpdateActivity"
             android:theme="@style/actionbarstyle"/>
+        <activity android:name=".TabThreeActivity"
+            android:theme="@style/actionbarstyle"/>
+        <activity android:name=".TabThreeLockScreenActivity"
+            android:theme="@style/actionbarstyle"/>
+        <service android:name=".TabThreeScreenService" />
+        <receiver android:name=".TabThreeScreenReceiver" />
     </application>
 
 </manifest>

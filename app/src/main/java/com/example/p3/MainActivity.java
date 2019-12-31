@@ -64,13 +64,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        /*findViewById(R.id.main_tab3).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.main_tab3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UnicodeHandler uh = new UnicodeHandler();
-                Toast.makeText(getApplicationContext(),uh.splitHangeulDemo(""),Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getApplicationContext(),TabThreeActivity.class);
+                startActivity(intent);
             }
-        });*/
+        });
     }
 
     public void checkPermission(){

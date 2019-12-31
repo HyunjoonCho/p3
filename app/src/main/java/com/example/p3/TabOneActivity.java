@@ -44,7 +44,7 @@ public class TabOneActivity extends AppCompatActivity {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.tab1_layout);
+        setContentView(R.layout.tab1_main);
 
         //jsonParsing(getJsonString());
         getContacts();
