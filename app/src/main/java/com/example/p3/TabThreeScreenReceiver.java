@@ -3,35 +3,16 @@ package com.example.p3;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Build;
+
+import java.util.ArrayList;
 
 public class TabThreeScreenReceiver extends BroadcastReceiver {
 
-    /*public boolean isRegistered = false;
+    /*private ArrayList<TabThreeItem> mList;
 
-    public Intent register(Context context, IntentFilter filter) {
-        try {
-            return !isRegistered
-                    ? context.registerReceiver(this, filter)
-                    : null;
-        } finally {
-            isRegistered = true;
-        }
-    }
-
-    public boolean unregister(Context context) {
-        // additional work match on context before unregister
-        // eg store weak ref in register then compare in unregister
-        // if match same instance
-        return isRegistered
-                && unregisterInternal(context);
-    }
-
-    private boolean unregisterInternal(Context context) {
-        context.unregisterReceiver(this);
-        isRegistered = false;
-        return true;
+    public void setmList(ArrayList<TabThreeItem> mList) {
+        this.mList = mList;
     }*/
 
     @Override
@@ -46,6 +27,7 @@ public class TabThreeScreenReceiver extends BroadcastReceiver {
 
         if (intent != null && intent.getAction() != null && intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
             Intent i = new Intent(context, TabThreeLockScreenActivity.class);
+            //i.putExtra("mList",mList);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
             i.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             context.startActivity(i);

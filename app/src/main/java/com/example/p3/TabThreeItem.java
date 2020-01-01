@@ -1,8 +1,8 @@
 package com.example.p3;
 
-import android.widget.Switch;
+import java.io.Serializable;
 
-public class TabThreeItem {
+public class TabThreeItem implements Serializable {
     private boolean aSwitch;
     private String warning;
 

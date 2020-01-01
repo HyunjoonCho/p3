@@ -16,10 +16,13 @@ import android.os.IBinder;
 
 import androidx.core.app.NotificationCompat;
 
+import java.util.ArrayList;
+
 public class TabThreeScreenService extends Service {
 
     private static TabThreeScreenReceiver mReceiver = null;
-    private static int turnoff = 1;
+    private static int turnoff = 0;
+    //private boolean isgetmList = false;
 
     @Override
     public IBinder onBind(Intent intent){
@@ -30,25 +33,23 @@ public class TabThreeScreenService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        /*if(mReceiver == null)
-            mReceiver = new TabThreeScreenReceiver();
-        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
-        mReceiver.register(getApplicationContext(),filter);*/
-        if(turnoff == 1){
-            mReceiver = new TabThreeScreenReceiver();
-            IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
-            registerReceiver(mReceiver,filter);
-            turnoff = 2;
-        }
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        initializeNotification();
 
-        if(turnoff != 2)
-            turnoff = intent.getIntExtra("turnoff",1);
+        turnoff = intent.getIntExtra("turnoff",0);
+
+        if(turnoff == 1){
+            mReceiver = new TabThreeScreenReceiver();
+            IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
+            registerReceiver(mReceiver,filter);
+        }else if(turnoff == 0){
+            System.out.println("NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+        }
+
+        initializeNotification();
         return START_STICKY;
     }
 
@@ -56,7 +57,7 @@ public class TabThreeScreenService extends Service {
     public void onDestroy() {
         super.onDestroy();
 
-        if(turnoff != 2) {
+        if(turnoff == 1) {
             final Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(System.currentTimeMillis());
             calendar.add(Calendar.SECOND, 3);
@@ -64,7 +65,7 @@ public class TabThreeScreenService extends Service {
             PendingIntent sender = PendingIntent.getBroadcast(this, 0, intent, 0);
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
-        }else
+        }else if(turnoff == 2)
             unregisterReceiver(mReceiver);
     }
 
@@ -72,7 +73,7 @@ public class TabThreeScreenService extends Service {
     public void onTaskRemoved(Intent rootIntent) {
         super.onTaskRemoved(rootIntent);
 
-        if(turnoff != 2) {
+        if(turnoff == 1) {
             final Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(System.currentTimeMillis());
             calendar.add(Calendar.SECOND, 3);
@@ -80,7 +81,7 @@ public class TabThreeScreenService extends Service {
             PendingIntent sender = PendingIntent.getBroadcast(this, 0, intent, 0);
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
-        }else
+        }else if(turnoff == 2)
             unregisterReceiver(mReceiver);
     }
 

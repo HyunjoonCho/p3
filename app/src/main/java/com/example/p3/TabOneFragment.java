@@ -40,16 +40,6 @@ public class TabOneFragment extends Fragment {
     private final static int UPDATE_CONTACT_FROM_RECORD = 20;
     private final static int DELETE_RESULT_CODE = 40;
 
-    String[] permission_list = {
-            Manifest.permission.WRITE_CONTACTS,
-            Manifest.permission.READ_CONTACTS,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.CAMERA,
-            //Manifest.permission.FOREGROUND_SERVICE,
-            Manifest.permission.READ_PHONE_STATE
-    };
-
 
     TabOneRecyclerAdapter myAdapter;
     ArrayList<TabOneRecyclerItem> items = new ArrayList<>();
@@ -64,8 +54,6 @@ public class TabOneFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab1_main, container, false);
-
-        checkPermission();
 
         getContacts();
 
@@ -206,7 +194,7 @@ public class TabOneFragment extends Fragment {
         cursor.close();
     }
 
-    public void checkPermission(){
+    /*public void checkPermission(){
         //현재 안드로이드 버전이 6.0미만이면 메서드를 종료한다.
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
             return;
@@ -234,5 +222,5 @@ public class TabOneFragment extends Fragment {
                 }
             }
         }
-    }
+    }*/
 }
