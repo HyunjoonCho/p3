@@ -9,8 +9,6 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.IBinder;
@@ -20,7 +18,8 @@ import androidx.core.app.NotificationCompat;
 
 public class TabThreeScreenService extends Service {
 
-    private TabThreeScreenReceiver mReceiver = null;
+    private static TabThreeScreenReceiver mReceiver = null;
+    private static int turnoff = 1;
 
     @Override
     public IBinder onBind(Intent intent){
@@ -31,14 +30,15 @@ public class TabThreeScreenService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        //Intent screenIntent = new Intent(getApplicationContext(),TabThreeScreenReceiver.class);
-        //PendingIntent.getBroadcast(getApplicationContext(),0,screenIntent,PendingIntent.FLAG_NO_CREATE);
-        //PendingIntent screenSender = PendingIntent.getBroadcast(getApplicationContext(),0,screenIntent,PendingIntent.FLAG_NO_CREATE);
-        //if(screenSender == null){
-        if(mReceiver == null){
+        /*if(mReceiver == null)
+            mReceiver = new TabThreeScreenReceiver();
+        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
+        mReceiver.register(getApplicationContext(),filter);*/
+        if(turnoff == 1){
             mReceiver = new TabThreeScreenReceiver();
             IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
-            registerReceiver(mReceiver, filter);
+            registerReceiver(mReceiver,filter);
+            turnoff = 2;
         }
     }
 
@@ -47,30 +47,41 @@ public class TabThreeScreenService extends Service {
         super.onStartCommand(intent, flags, startId);
         initializeNotification();
 
+        if(turnoff != 2)
+            turnoff = intent.getIntExtra("turnoff",1);
         return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        final Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.add(Calendar.SECOND, 3);
-        Intent intent = new Intent(this, TabThreeScreenReceiver.class);
-        PendingIntent sender = PendingIntent.getBroadcast(this, 0,intent,0);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
+
+        if(turnoff != 2) {
+            final Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(System.currentTimeMillis());
+            calendar.add(Calendar.SECOND, 3);
+            Intent intent = new Intent(this, TabThreeScreenReceiver.class);
+            PendingIntent sender = PendingIntent.getBroadcast(this, 0, intent, 0);
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
+        }else
+            unregisterReceiver(mReceiver);
     }
+
     @Override
     public void onTaskRemoved(Intent rootIntent) {
         super.onTaskRemoved(rootIntent);
-        final Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.add(Calendar.SECOND, 3);
-        Intent intent = new Intent(this, TabThreeScreenReceiver.class);
-        PendingIntent sender = PendingIntent.getBroadcast(this, 0,intent,0);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
+
+        if(turnoff != 2) {
+            final Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(System.currentTimeMillis());
+            calendar.add(Calendar.SECOND, 3);
+            Intent intent = new Intent(this, TabThreeScreenReceiver.class);
+            PendingIntent sender = PendingIntent.getBroadcast(this, 0, intent, 0);
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
+        }else
+            unregisterReceiver(mReceiver);
     }
 
     public void initializeNotification() {
@@ -90,9 +101,9 @@ public class TabThreeScreenService extends Service {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
         builder.setContentIntent(pendingIntent);
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             manager.createNotificationChannel(new NotificationChannel("1", "undead_service", NotificationManager.IMPORTANCE_NONE));
-        }
+
         Notification notification = builder.build();
         startForeground(1, notification);
     }

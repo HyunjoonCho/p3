@@ -3,9 +3,36 @@ package com.example.p3;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 
 public class TabThreeScreenReceiver extends BroadcastReceiver {
+
+    /*public boolean isRegistered = false;
+
+    public Intent register(Context context, IntentFilter filter) {
+        try {
+            return !isRegistered
+                    ? context.registerReceiver(this, filter)
+                    : null;
+        } finally {
+            isRegistered = true;
+        }
+    }
+
+    public boolean unregister(Context context) {
+        // additional work match on context before unregister
+        // eg store weak ref in register then compare in unregister
+        // if match same instance
+        return isRegistered
+                && unregisterInternal(context);
+    }
+
+    private boolean unregisterInternal(Context context) {
+        context.unregisterReceiver(this);
+        isRegistered = false;
+        return true;
+    }*/
 
     @Override
     public void onReceive(Context context, Intent intent) {
