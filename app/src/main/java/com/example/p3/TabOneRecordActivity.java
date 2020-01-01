@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,7 +38,7 @@ public class TabOneRecordActivity extends AppCompatActivity {
         if(item.getProfile() != null)
             profile_img.setImageBitmap(BitmapFactory.decodeByteArray(item.getProfile(),0,item.getProfile().length));
         else
-            profile_img.setImageResource(R.drawable.baseline_person_black_36dp);
+            profile_img.setImageResource(return_profile_180(item.getDefault_profile_color()));
         record_name.setText(item.getName());
         phonenum.setText(item.getPhonenum());
 
@@ -95,6 +94,29 @@ public class TabOneRecordActivity extends AppCompatActivity {
             record_name.setText(update_item.getName());
             phonenum.setText(update_item.getPhonenum());
             setResult(RESULT_OK, data);
+        }
+    }
+
+    public int return_profile_180(int num){
+        switch (num){
+            case 0:
+                return R.drawable.person_icon_blue_180;
+            case 1:
+                return R.drawable.person_icon_grape_180;
+            case 2:
+                return R.drawable.person_icon_green_180;
+            case 3:
+                return R.drawable.person_icon_orange_180;
+            case 4:
+                return R.drawable.person_icon_pink_180;
+            case 5:
+                return R.drawable.person_icon_red_180;
+            case 6:
+                return R.drawable.person_icon_sky_180;
+            case 7:
+                return R.drawable.person_icon_yellow_180;
+            default:
+                return R.drawable.person_icon_blue_180;
         }
     }
 }

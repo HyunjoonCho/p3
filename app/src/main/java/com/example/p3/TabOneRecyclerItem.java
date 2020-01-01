@@ -8,6 +8,7 @@ public class TabOneRecyclerItem implements Comparable<TabOneRecyclerItem>, Seria
     private String name;
     private String phonenum;
     private byte[] profile;
+    private int default_profile_color = 0;
 
     public TabOneRecyclerItem(){
     }
@@ -35,6 +36,15 @@ public class TabOneRecyclerItem implements Comparable<TabOneRecyclerItem>, Seria
     public void setProfile(byte[] profile) {
         this.profile = profile;
     }
+
+    public int getDefault_profile_color() {
+        return default_profile_color;
+    }
+
+    public void setDefault_profile_color(int default_profile_color) {
+        this.default_profile_color = default_profile_color;
+    }
+
 
     @Override
     public int compareTo(TabOneRecyclerItem o) {

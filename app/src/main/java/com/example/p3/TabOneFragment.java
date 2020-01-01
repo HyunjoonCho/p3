@@ -6,18 +6,28 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,6 +55,7 @@ public class TabOneFragment extends Fragment {
     ArrayList<TabOneRecyclerItem> items = new ArrayList<>();
     CardView cv;
     private AlertDialog.Builder builder;
+    private boolean isdrawed = false;
 
     public TabOneRecyclerAdapter getMyAdapter() {
         return myAdapter;
@@ -56,6 +67,8 @@ public class TabOneFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.tab1_main, container, false);
 
         getContacts();
+        TextView contactsnum = rootView.findViewById(R.id.tab1_drawer_contactsnum);
+        contactsnum.setText(Integer.toString(items.size()));
 
         RecyclerView myRecycler =  rootView.findViewById(R.id.tab1_recyclerview);
         LinearLayoutManager myLayoutmgr = new LinearLayoutManager(getActivity());
@@ -114,12 +127,63 @@ public class TabOneFragment extends Fragment {
             }
         });
 
+
+        ImageButton select_option_btn = rootView.findViewById(R.id.tab1_title_img2);
+        select_option_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popupMenu = new PopupMenu(getActivity(),v);
+
+                getActivity().getMenuInflater().inflate(R.menu.tab1_main_menu,popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()){
+                            case R.id.tab1_pop_select_one:
+                                break;
+                            case R.id.tab1_pop_select_all:
+                                break;
+                            case R.id.tab1_pop_setting:
+                                break;
+                        }
+                        return false;
+                    }
+                });
+                popupMenu.show();
+            }
+        });
+
         FloatingActionButton fabbtn = rootView.findViewById(R.id.tab1_fab);
         fabbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), TabOneCreateActivity.class);
                 getActivity().startActivityForResult(intent, CREATE_NEW_CONTACT);
+            }
+        });
+
+        final DrawerLayout drawerLayout = rootView.findViewById(R.id.tab1_drawerlayout);
+        final View drawerView = rootView.findViewById(R.id.tab1_drawer_item_layout);
+
+        rootView.findViewById(R.id.tab1_drawer_contactslayout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.closeDrawer(drawerView);
+            }
+        });
+
+        rootView.findViewById(R.id.tab1_drawer_settinglayout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //미구현
+            }
+        });
+
+        ImageButton drawerbtn = rootView.findViewById(R.id.tab1_title_drawerbtn);
+        drawerbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(drawerView);
             }
         });
 

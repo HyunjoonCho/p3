@@ -1,5 +1,6 @@
 package com.example.p3;
 
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -18,6 +20,7 @@ public class TabOneSearchRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
     ArrayList<TabOneRecyclerItem> items;
     private OnItemsearchClickListener mListener = null;
     private OnListItemLongSelectedInterface mLongListener = null;
+    private int profile_color_num = 8;
 
     public interface OnItemsearchClickListener{
         void OnItemClick(View v, int position);
@@ -45,6 +48,10 @@ public class TabOneSearchRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         TabOneRecyclerViewHolder tab1viewholder = (TabOneRecyclerViewHolder)holder;
         tab1viewholder.tv_name.setText(items.get(position).getName());
+        if(items.get(position).getProfile() != null)
+            tab1viewholder.circleImageView.setImageBitmap(BitmapFactory.decodeByteArray(items.get(position).getProfile(),0,items.get(position).getProfile().length));
+        else
+            tab1viewholder.circleImageView.setImageResource(return_profile_36(items.get(position).getDefault_profile_color()));
 
     }
 
@@ -88,5 +95,32 @@ public class TabOneSearchRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
 
     public ArrayList<TabOneRecyclerItem> getItems() {
         return items;
+    }
+
+    public int random_profile_color(){
+        return new Random().nextInt(profile_color_num);
+    }
+
+    public int return_profile_36(int num){
+        switch (num){
+            case 0:
+                return R.drawable.person_icon_blue_36;
+            case 1:
+                return R.drawable.person_icon_grape_36;
+            case 2:
+                return R.drawable.person_icon_green_36;
+            case 3:
+                return R.drawable.person_icon_orange_36;
+            case 4:
+                return R.drawable.person_icon_pink_36;
+            case 5:
+                return R.drawable.person_icon_red_36;
+            case 6:
+                return R.drawable.person_icon_sky_36;
+            case 7:
+                return R.drawable.person_icon_yellow_36;
+            default:
+                return R.drawable.person_icon_blue_36;
+        }
     }
 }

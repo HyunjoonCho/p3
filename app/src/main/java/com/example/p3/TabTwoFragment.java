@@ -113,10 +113,13 @@ public class TabTwoFragment extends Fragment {
     }
 
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.content_main, container, false);
+
+        mList.clear();
 
         // 사진추가
         addItem(getResources().getDrawable(R.drawable.water));
