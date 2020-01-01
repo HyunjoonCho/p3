@@ -131,25 +131,25 @@ public class TabTwoFragment extends Fragment {
         addItem(getResources().getDrawable(R.drawable.image26));
         addItem(getResources().getDrawable(R.drawable.image27));
         addItem(getResources().getDrawable(R.drawable.image28));
-        addItem(getResources().getDrawable(R.drawable.image29));
-        addItem(getResources().getDrawable(R.drawable.image30));
-        addItem(getResources().getDrawable(R.drawable.image31));
-        addItem(getResources().getDrawable(R.drawable.image33));
-        addItem(getResources().getDrawable(R.drawable.image35));
-        addItem(getResources().getDrawable(R.drawable.image36));
         addItem(getResources().getDrawable(R.drawable.image8));
         addItem(getResources().getDrawable(R.drawable.image9));
         addItem(getResources().getDrawable(R.drawable.image10));
-        addItem(getResources().getDrawable(R.drawable.image11));
-        addItem(getResources().getDrawable(R.drawable.image12));
-        addItem(getResources().getDrawable(R.drawable.image13));
-        addItem(getResources().getDrawable(R.drawable.image14));
-        addItem(getResources().getDrawable(R.drawable.image15));
-        addItem(getResources().getDrawable(R.drawable.image16));
-        addItem(getResources().getDrawable(R.drawable.image18));
+        addItem(getResources().getDrawable(R.drawable.image29));
+        addItem(getResources().getDrawable(R.drawable.image30));
+        addItem(getResources().getDrawable(R.drawable.image31));
         addItem(getResources().getDrawable(R.drawable.image19));
         addItem(getResources().getDrawable(R.drawable.image20));
         addItem(getResources().getDrawable(R.drawable.image23));
+        addItem(getResources().getDrawable(R.drawable.image33));
+        addItem(getResources().getDrawable(R.drawable.image13));
+        addItem(getResources().getDrawable(R.drawable.image14));
+        addItem(getResources().getDrawable(R.drawable.image15));
+        addItem(getResources().getDrawable(R.drawable.image35));
+        addItem(getResources().getDrawable(R.drawable.image36));
+        addItem(getResources().getDrawable(R.drawable.image11));
+        addItem(getResources().getDrawable(R.drawable.image12));
+        addItem(getResources().getDrawable(R.drawable.image16));
+        addItem(getResources().getDrawable(R.drawable.image18));
         addItem(getResources().getDrawable(R.drawable.image24));
         addItem(getResources().getDrawable(R.drawable.image25));
 
@@ -158,9 +158,11 @@ public class TabTwoFragment extends Fragment {
         mRecyclerView = rootView.findViewById(R.id.recycler1);
         mAdapter = new RecyclerAdapter(mList,getActivity());
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 4));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3);
+        gridLayoutManager.setItemPrefetchEnabled(true);
+        mRecyclerView.setLayoutManager(gridLayoutManager);
         mRecyclerView.addItemDecoration(new MovieItemDecoration(getActivity()));
-        mAdapter.notifyDataSetChanged();
+        //mAdapter.notifyDataSetChanged();
 
         return rootView;
     }
