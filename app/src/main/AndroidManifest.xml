@@ -45,6 +45,7 @@
             android:theme="@style/AppTheme"/>
         <activity android:name=".TabThreeCreateActivity"
             android:theme="@style/AppTheme"/>
+
         <service android:name=".TabThreeScreenService" />
         <receiver android:name=".TabThreeScreenReceiver" />
     </application>

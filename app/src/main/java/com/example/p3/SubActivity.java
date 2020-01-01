@@ -9,6 +9,8 @@ import android.widget.ViewSwitcher;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.github.chrisbanes.photoview.PhotoView;
+
 import java.security.cert.PKIXRevocationChecker;
 import java.util.ArrayList;
 
@@ -20,10 +22,10 @@ public class SubActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.subactivity);
 
-        ImageView imageView = findViewById(R.id.imageView);
+        PhotoView photoView = findViewById(R.id.imageView);
         Intent intent = getIntent();
         Bitmap bitmap = intent.getParcelableExtra("image");
 
-        imageView.setImageBitmap(bitmap);
+        photoView.setImageBitmap(bitmap);
     }
 }

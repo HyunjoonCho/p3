@@ -163,7 +163,7 @@ public class Gallery extends AppCompatActivity {
         addItem(getDrawable(R.drawable.image24));
         addItem(getDrawable(R.drawable.image25));
 
-        getUriArray();
+        //getUriArray();
 
         mRecyclerView = findViewById(R.id.recycler1);
         mAdapter = new RecyclerAdapter(mList,getApplicationContext());
