@@ -2,12 +2,14 @@ package com.example.p3;
 
 
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,9 +25,11 @@ import java.util.ArrayList;
 
 public class TabThreeLockScreenActivity extends AppCompatActivity {
 
+    ImageView imageView;
     EditText editText;
     ArrayList<TabThreeItem> mList;
     ArrayList<TabThreeItem> selected_list;
+    ArrayList<Drawable> drawable_list;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         //setTheme(android.R.style.Theme_NoTitleBar);
@@ -45,6 +49,9 @@ public class TabThreeLockScreenActivity extends AppCompatActivity {
 
         TextView textView = findViewById(R.id.quiz);
         editText = findViewById(R.id.answer);
+        imageView = findViewById(R.id.imageView3);
+        imageView.setImageResource(R.drawable.image_past);
+
         final int r = (int)(Math.random()*selected_list.size());
         textView.setText(selected_list.get(r).getWarning());
         editText.setInputType(InputType.TYPE_CLASS_TEXT);

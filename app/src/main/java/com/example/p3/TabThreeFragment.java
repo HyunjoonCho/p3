@@ -84,8 +84,8 @@ public class TabThreeFragment extends Fragment {
             mList = gson.fromJson(mList_json, listType);
         else {
             addItem(false, "전여친한테 전화하지마!");
-            addItem(false, "전남친한테 전화하지마!");
-            addItem(true, "Hello");
+            addItem(false, "Stay...");
+            addItem(false, "이불킥 또 하게?");
 
             mList_json = gson.toJson(mList,listType);
             sp = getActivity().getSharedPreferences("TabThreeItemList",MODE_PRIVATE);

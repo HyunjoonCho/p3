@@ -163,12 +163,12 @@ public class Gallery extends AppCompatActivity {
         addItem(getDrawable(R.drawable.image24));
         addItem(getDrawable(R.drawable.image25));
 
-        getUriArray();
+        //getUriArray();
 
         mRecyclerView = findViewById(R.id.recycler1);
         mAdapter = new RecyclerAdapter(mList,getApplicationContext());
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 4));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 5));
         mRecyclerView.addItemDecoration(new MovieItemDecoration(this));
         mRecyclerView.setNestedScrollingEnabled(false);
         mAdapter.notifyDataSetChanged();
