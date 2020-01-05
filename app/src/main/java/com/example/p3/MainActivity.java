@@ -47,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
     private final static int DELETE_RESULT_CODE = 40;
 
     private FragmentManager fragmentManager = getSupportFragmentManager();
-    private TabOneFragment tabOneFragment = new TabOneFragment();
-    private GalleryFragment tabTwoFragment = new GalleryFragment();
+    private TabOneFragment tabOneFragment;
+    private GalleryFragment tabTwoFragment;
     private TabThreeFragment tabThreeFragment = new TabThreeFragment();
 
 
@@ -57,7 +57,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        checkPermission();
+        tabOneFragment = new TabOneFragment(getIntent().getStringExtra("id"));
+        tabTwoFragment = new GalleryFragment(getIntent().getStringExtra("id"));
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.main_navigation_view);
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -100,13 +101,13 @@ public class MainActivity extends AppCompatActivity {
             TabOneRecyclerItem update_item = (TabOneRecyclerItem)data.getSerializableExtra("updateditem");
             int pos = data.getIntExtra("position",1);
             tabOneFragment.getMyAdapter().getItems().get(pos).setName(update_item.getName());
-            tabOneFragment.getMyAdapter().getItems().get(pos).setPhonenum(update_item.getPhonenum());
+            tabOneFragment.getMyAdapter().getItems().get(pos).setPhone_number(update_item.getPhone_number());
             tabOneFragment.getMyAdapter().notifyDataSetChanged();
         }else if(requestCode == UPDATE_CONTACT_FROM_RECORD && resultCode == RESULT_OK && data != null){
             TabOneRecyclerItem update_item = (TabOneRecyclerItem)data.getSerializableExtra("updateditem");
             int pos = data.getIntExtra("position",1);
             tabOneFragment.getMyAdapter().getItems().get(pos).setName(update_item.getName());
-            tabOneFragment.getMyAdapter().getItems().get(pos).setPhonenum(update_item.getPhonenum());
+            tabOneFragment.getMyAdapter().getItems().get(pos).setPhone_number(update_item.getPhone_number());
             tabOneFragment.getMyAdapter().notifyDataSetChanged();
         }else if(requestCode == UPDATE_CONTACT_FROM_RECORD && resultCode == DELETE_RESULT_CODE && data != null){
             int pos = data.getIntExtra("position",1);
@@ -121,44 +122,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void checkPermission(){
-        //현재 안드로이드 버전이 6.0미만이면 메서드를 종료한다.
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
-            return;
-
-        for(String permission : permission_list){
-            //권한 허용 여부를 확인한다.
-            int chk = checkCallingOrSelfPermission(permission);
-
-            if(chk == PackageManager.PERMISSION_DENIED){
-                //권한 허용을여부를 확인하는 창을 띄운다
-                requestPermissions(permission_list,0);
-            }
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode==0)
-        {
-            for(int i=0; i<grantResults.length; i++)
-            {
-                if(grantResults[i]!= PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getApplicationContext(),"앱권한설정하세요", Toast.LENGTH_LONG).show();
-                }
-            }
-        }
-    }
-
-
-    public void getimg(){
-
-    }
-
     public interface onBackPressedListener {
         void onBack();
-}
+    }
 
     public void setOnBackPressedListener(@Nullable onBackPressedListener mListener) {
         mOnBackPressedListener = mListener;

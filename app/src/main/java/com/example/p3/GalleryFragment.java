@@ -43,6 +43,9 @@ public class GalleryFragment extends Fragment implements MainActivity.onBackPres
     private Button shareButton;
     private TextView infoText;
     private LinearLayout buttonLayout;
+    private String facebook_id;
+
+    public GalleryFragment(String facebook_id){this.facebook_id = facebook_id;}
 
     @Nullable
     @Override

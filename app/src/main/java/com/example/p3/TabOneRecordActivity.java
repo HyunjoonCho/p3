@@ -1,9 +1,11 @@
 package com.example.p3;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
@@ -35,12 +37,12 @@ public class TabOneRecordActivity extends AppCompatActivity {
         item = (TabOneRecyclerItem)intent.getSerializableExtra("recorditem");
         final int pos = intent.getIntExtra("position",1);
 
-        if(item.getProfile() != null)
-            profile_img.setImageBitmap(BitmapFactory.decodeByteArray(item.getProfile(),0,item.getProfile().length));
+        if(!item.getProfile_pic().equals("no_profile"))
+            profile_img.setImageBitmap(getBitmapFromString(item.getProfile_pic()));
         else
             profile_img.setImageResource(return_profile_180(item.getDefault_profile_color()));
         record_name.setText(item.getName());
-        phonenum.setText(item.getPhonenum());
+        phonenum.setText(item.getPhone_number());
 
         findViewById(R.id.tab1_record_backbtn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +79,7 @@ public class TabOneRecordActivity extends AppCompatActivity {
         findViewById(R.id.tab1_record_call_img1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + item.getPhonenum()));
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + item.getPhone_number()));
                 startActivity(intent);
             }
         });
@@ -90,9 +92,9 @@ public class TabOneRecordActivity extends AppCompatActivity {
         if(requestCode == UPDATE_CONTACT && resultCode == RESULT_OK && data != null) {
             TabOneRecyclerItem update_item = (TabOneRecyclerItem)data.getSerializableExtra("updateditem");
             item.setName(update_item.getName());
-            item.setPhonenum(update_item.getPhonenum());
+            item.setPhone_number(update_item.getPhone_number());
             record_name.setText(update_item.getName());
-            phonenum.setText(update_item.getPhonenum());
+            phonenum.setText(update_item.getPhone_number());
             setResult(RESULT_OK, data);
         }
     }
@@ -118,5 +120,11 @@ public class TabOneRecordActivity extends AppCompatActivity {
             default:
                 return R.drawable.person_icon_blue_180;
         }
+    }
+
+    private Bitmap getBitmapFromString(String stringPicture) {
+        byte[] decodedString = Base64.decode(stringPicture, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        return decodedByte;
     }
 }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
@@ -16,6 +17,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.Collections;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class TabOneSearchActivity extends AppCompatActivity {
 
@@ -66,11 +71,23 @@ public class TabOneSearchActivity extends AppCompatActivity {
                     @Override
 
                     public void onClick(DialogInterface dialog, int which) {
-                        myAdapter.getItems().remove(position);
-                        myAdapter.notifyDataSetChanged();
-                        Intent delete_intent = new Intent();
-                        delete_intent.putExtra("position",position_list.get(position));
-                        setResult(DELETE_RESULT_CODE,delete_intent);
+                        NetworkHelper.getApiService().deleteContract(myAdapter.getItems().get(position).getContactid()).enqueue(new Callback<String>() {
+                            @Override
+                            public void onResponse(Call<String> call, Response<String> response) {
+                                Log.e("DELETE",response.body());
+                                myAdapter.getItems().remove(position);
+                                myAdapter.notifyDataSetChanged();
+                                Intent delete_intent = new Intent();
+                                delete_intent.putExtra("position",position_list.get(position));
+                                setResult(DELETE_RESULT_CODE,delete_intent);
+                                position_list.remove(position);
+                            }
+
+                            @Override
+                            public void onFailure(Call<String> call, Throwable t) {
+                                Log.e("error",t.getMessage());
+                            }
+                        });
                     }
                 });
 
@@ -198,7 +215,7 @@ public class TabOneSearchActivity extends AppCompatActivity {
             TabOneRecyclerItem update_item = (TabOneRecyclerItem)data.getSerializableExtra("updateditem");
             int pos = data.getIntExtra("position",1);
             myAdapter.getItems().get(pos).setName(update_item.getName());
-            myAdapter.getItems().get(pos).setPhonenum(update_item.getPhonenum());
+            myAdapter.getItems().get(pos).setPhone_number(update_item.getPhone_number());
             myAdapter.notifyDataSetChanged();
 
             Intent mainforintent = new Intent();

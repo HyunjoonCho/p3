@@ -8,6 +8,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +31,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Random;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class TabOneCreateActivity extends AppCompatActivity {
 
@@ -39,12 +48,16 @@ public class TabOneCreateActivity extends AppCompatActivity {
     private AlertDialog.Builder builder;
     private FloatingActionButton camera_fab;
     private Bitmap profile_bitmap = null;
+    private int profile_color_num = 8;
+    private String facebook_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tab1_create_contact);
         alertbuilderset();
+
+        facebook_id = getIntent().getStringExtra("id");
 
         profile = findViewById(R.id.tab1_create_profile);
         nametxt = findViewById(R.id.tab1_create_name);
@@ -126,22 +139,33 @@ public class TabOneCreateActivity extends AppCompatActivity {
                 if(nametxt.getText().toString().trim().length() == 0 || phonetxt.getText().toString().trim().length() == 0)
                     Toast.makeText(getApplicationContext(),"정보를 입력하세요",Toast.LENGTH_SHORT).show();
                 else{
-                    TabOneRecyclerItem item = new TabOneRecyclerItem();
+                    final TabOneRecyclerItem item = new TabOneRecyclerItem();
 
                     item.setName(nametxt.getText().toString());
-                    item.setPhonenum(phonetxt.getText().toString());
-                    if(profile_bitmap != null) {
-                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        profile_bitmap.compress(Bitmap.CompressFormat.PNG,50,stream);
-                        profile_bitmap.createScaledBitmap(profile_bitmap,36,36,false);
-                        item.setProfile(stream.toByteArray());
-                    }else
-                        item.setProfile(null);
+                    item.setPhone_number(phonetxt.getText().toString());
+                    if(profile_bitmap != null)
+                        item.setProfile_pic(getStringFromBitmap(profile_bitmap));
+                    else
+                        item.setProfile_pic("no_profile");
 
-                    Intent intent = new Intent();
-                    intent.putExtra("item",item);
-                    setResult(RESULT_OK,intent);
-                    finish();
+                    item.setDefault_profile_color(random_profile_color());
+                    item.setUserid(facebook_id);
+                    item.setContactid(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                    NetworkHelper.getApiService().postContract(item.getUserid(),item.getContactid(),item.getName(),item.getPhone_number(),item.getProfile_pic()).enqueue(new Callback<TabOneRecyclerItem>() {
+                        @Override
+                        public void onResponse(Call<TabOneRecyclerItem> call, Response<TabOneRecyclerItem> response) {
+                            Log.e("posted",response.body().getName());
+                            Intent intent = new Intent();
+                            intent.putExtra("item",item);
+                            setResult(RESULT_OK,intent);
+                            finish();
+                        }
+
+                        @Override
+                        public void onFailure(Call<TabOneRecyclerItem> call, Throwable t) {
+                            Log.e("posted",t.getMessage());
+                        }
+                    });
                 }
             }
         });
@@ -168,30 +192,18 @@ public class TabOneCreateActivity extends AppCompatActivity {
         });
     }
 
+    private String getStringFromBitmap(Bitmap bitmapPicture) {
+        final int COMPRESSION_QUALITY = 100;
+        String encodedImage;
+        ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
+        bitmapPicture.compress(Bitmap.CompressFormat.PNG, COMPRESSION_QUALITY,
+                byteArrayBitmapStream);
+        byte[] b = byteArrayBitmapStream.toByteArray();
+        encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+        return encodedImage;
+    }
 
-    public Bitmap readImageWithSampling(String imagePath, int targetWidth, int targetHeight) {
-        // Get the dimensions of the bitmap
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        bmOptions.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(imagePath, bmOptions);
-
-        int photoWidth  = bmOptions.outWidth;
-        int photoHeight = bmOptions.outHeight;
-
-        if (targetHeight <= 0) {
-            targetHeight = (targetWidth * photoHeight) / photoWidth;
-        }
-
-        // Determine how much to scale down the image
-        int scaleFactor = 1;
-        if (photoWidth > targetWidth) {
-            scaleFactor = Math.min(photoWidth / targetWidth, photoHeight / targetHeight);
-        }
-
-        // Decode the image file into a Bitmap sized to fill the View
-        bmOptions.inJustDecodeBounds = false;
-        bmOptions.inSampleSize = scaleFactor;
-
-        return BitmapFactory.decodeFile(imagePath, bmOptions);
+    public int random_profile_color(){
+        return new Random().nextInt(profile_color_num);
     }
 }

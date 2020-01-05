@@ -1,6 +1,8 @@
 package com.example.p3;
 
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
@@ -21,7 +24,6 @@ public class TabOneRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     ArrayList<TabOneRecyclerItem> items;
     private OnItemClickListener mListener = null;
     private OnListItemLongSelectedInterface mLongListener = null;
-    private int profile_color_num = 8;
 
     public interface OnItemClickListener {
         void OnItemClick(View v, int position);
@@ -58,10 +60,10 @@ public class TabOneRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         TabOneRecyclerViewHolder tab1viewholder = (TabOneRecyclerViewHolder)holder;
         tab1viewholder.tv_name.setText(items.get(position).getName());
-        if(items.get(position).getProfile() != null) {
-            tab1viewholder.circleImageView.setImageBitmap(BitmapFactory.decodeByteArray(items.get(position).getProfile(),0,items.get(position).getProfile().length));
+        if(!items.get(position).getProfile_pic().equals("no_profile")) {
+            tab1viewholder.circleImageView.setImageBitmap(getBitmapFromString(items.get(position).getProfile_pic()));
         }else {
-            int color_num = random_profile_color();
+            int color_num = items.get(position).getDefault_profile_color();
             items.get(position).setDefault_profile_color(color_num);
             tab1viewholder.circleImageView.setImageResource(return_profile_36(color_num));
         }
@@ -95,9 +97,9 @@ public class TabOneRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 @Override
                 public boolean onLongClick(View v) {
                     int pos = getAdapterPosition();
-                        if(pos != RecyclerView.NO_POSITION)
-                            if(mLongListener != null)
-                                mLongListener.onItemLongSelected(v, pos);
+                    if(pos != RecyclerView.NO_POSITION)
+                        if(mLongListener != null)
+                            mLongListener.onItemLongSelected(v, pos);
                     return false;
                 }
             });
@@ -106,10 +108,6 @@ public class TabOneRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     public ArrayList<TabOneRecyclerItem> getItems() {
         return items;
-    }
-
-    public int random_profile_color(){
-        return new Random().nextInt(profile_color_num);
     }
 
     public int return_profile_36(int num){
@@ -133,5 +131,11 @@ public class TabOneRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             default:
                 return R.drawable.person_icon_blue_36;
         }
+    }
+
+    private Bitmap getBitmapFromString(String stringPicture) {
+        byte[] decodedString = Base64.decode(stringPicture, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        return decodedByte;
     }
 }

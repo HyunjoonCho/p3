@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -21,6 +23,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class TabOneUpdateActivity extends AppCompatActivity {
 
@@ -52,10 +58,10 @@ public class TabOneUpdateActivity extends AppCompatActivity {
         position = update_intent.getIntExtra("position",1);
 
         nametxt.setText(item.getName());
-        phonetxt.setText(item.getPhonenum());
+        phonetxt.setText(item.getPhone_number());
 
-        if(item.getProfile() != null){
-            profile.setImageBitmap(BitmapFactory.decodeByteArray(item.getProfile(),0,item.getProfile().length));
+        if(!item.getProfile_pic().equals("no_profile")){
+            profile.setImageBitmap(getBitmapFromString(item.getProfile_pic()));
             profile.setClickable(true);
             profile.setVisibility(View.VISIBLE);
             camera_fab.setClickable(false);
@@ -115,13 +121,24 @@ public class TabOneUpdateActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 item.setName(nametxt.getText().toString());
-                item.setPhonenum(phonetxt.getText().toString());
+                item.setPhone_number(phonetxt.getText().toString());
 
-                Intent intent = new Intent();
-                intent.putExtra("updateditem",item);
-                intent.putExtra("position",position);
-                setResult(RESULT_OK,intent);
-                finish();
+                NetworkHelper.getApiService().putContract(item.getContactid(),item).enqueue(new Callback<TabOneRecyclerItem>() {
+                    @Override
+                    public void onResponse(Call<TabOneRecyclerItem> call, Response<TabOneRecyclerItem> response) {
+                        Log.e("PUT",response.body().getName());
+                        Intent intent = new Intent();
+                        intent.putExtra("updateditem",item);
+                        intent.putExtra("position",position);
+                        setResult(RESULT_OK,intent);
+                        finish();
+                    }
+
+                    @Override
+                    public void onFailure(Call<TabOneRecyclerItem> call, Throwable t) {
+                        Log.e("error",t.getMessage());
+                    }
+                });
             }
         });
         return true;
@@ -147,5 +164,11 @@ public class TabOneUpdateActivity extends AppCompatActivity {
             camera_fab.hide();
             camera_fab.setClickable(false);
         }
+    }
+
+    private Bitmap getBitmapFromString(String stringPicture) {
+        byte[] decodedString = Base64.decode(stringPicture, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        return decodedByte;
     }
 }

@@ -10,7 +10,10 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.ContactsContract;
+import android.util.JsonWriter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,10 +41,22 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class TabOneFragment extends Fragment {
 
@@ -56,7 +71,10 @@ public class TabOneFragment extends Fragment {
     CardView cv;
     private AlertDialog.Builder builder;
     private boolean isdrawed = false;
+    private String facebook_id;
+    private int profile_color_num = 8;
 
+    public TabOneFragment(String facebook_id){this.facebook_id = facebook_id; }
     public TabOneRecyclerAdapter getMyAdapter() {
         return myAdapter;
     }
@@ -66,12 +84,13 @@ public class TabOneFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab1_main, container, false);
 
-        getContacts();
+        getContactsFromDB();
+
         TextView contactsnum = rootView.findViewById(R.id.tab1_drawer_contactsnum);
         contactsnum.setText(Integer.toString(items.size()));
 
         RecyclerView myRecycler =  rootView.findViewById(R.id.tab1_recyclerview);
-        LinearLayoutManager myLayoutmgr = new LinearLayoutManager(getActivity());
+        final LinearLayoutManager myLayoutmgr = new LinearLayoutManager(getActivity());
 
         myAdapter = new TabOneRecyclerAdapter(items);
 
@@ -96,8 +115,19 @@ public class TabOneFragment extends Fragment {
                     @Override
 
                     public void onClick(DialogInterface dialog, int which) {
-                        myAdapter.getItems().remove(position);
-                        myAdapter.notifyDataSetChanged();
+                        NetworkHelper.getApiService().deleteContract(myAdapter.getItems().get(position).getContactid()).enqueue(new Callback<String>() {
+                            @Override
+                            public void onResponse(Call<String> call, Response<String> response) {
+                                Log.e("DELETE",response.body());
+                                myAdapter.getItems().remove(position);
+                                myAdapter.notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void onFailure(Call<String> call, Throwable t) {
+                                Log.e("error",t.getMessage());
+                            }
+                        });
                     }
                 });
 
@@ -158,6 +188,7 @@ public class TabOneFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), TabOneCreateActivity.class);
+                intent.putExtra("id",facebook_id);
                 getActivity().startActivityForResult(intent, CREATE_NEW_CONTACT);
             }
         });
@@ -190,72 +221,59 @@ public class TabOneFragment extends Fragment {
         return rootView;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
-    }
-
-    private String getJsonString()
-    {
-        String json = "";
-
-        try {
-            InputStream is = getActivity().getAssets().open("phone.json");
-            int fileSize = is.available();
-
-            byte[] buffer = new byte[fileSize];
-            is.read(buffer);
-            is.close();
-
-            json = new String(buffer, "UTF-8");
-        }
-        catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        return json;
-    }
-
-    private void jsonParsing(String json)
-    {
-        try{
-            JSONObject jsonObject = new JSONObject(json);
-
-            JSONArray itemArray = jsonObject.getJSONArray("TabOneRecyclerItem");
-
-            for(int i=0; i<itemArray.length(); i++)
-            {
-                JSONObject itemObject = itemArray.getJSONObject(i);
-
-                TabOneRecyclerItem item = new TabOneRecyclerItem();
-
-                item.setName(itemObject.getString("name"));
-                item.setPhonenum(itemObject.getString("phonenum"));
-                items.add(item);
+    public void getContactsFromDB(){
+        items.clear();
+        NetworkHelper.getApiService().getContactsByUserid(facebook_id).enqueue(new Callback<List<TabOneRecyclerItem>>() {
+            @Override
+            public void onResponse(Call<List<TabOneRecyclerItem>> call, Response<List<TabOneRecyclerItem>> response) {
+                try{
+                    List<TabOneRecyclerItem> contact = response.body();
+                    if(contact != null && contact.size() != 0) {
+                        for (int i = 0; i < contact.size(); i++) {
+                            TabOneRecyclerItem item = new TabOneRecyclerItem(contact.get(i).getUserid(),contact.get(i).getContactid(),contact.get(i).getName(),contact.get(i).getPhone_number(),contact.get(i).getProfile_pic());
+                            item.setDefault_profile_color(random_profile_color());
+                            items.add(item);
+                            Log.e("name : ",contact.get(i).getName());
+                        }
+                        Collections.sort(items);
+                        myAdapter.notifyDataSetChanged();
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
-        }catch (JSONException e) {
-            e.printStackTrace();
-        }
+
+            @Override
+            public void onFailure(Call<List<TabOneRecyclerItem>> call, Throwable t) {
+                Log.v("error",t.getMessage());
+            }
+        });
     }
 
-
-    public void getContacts(){
+    public void getContactsFromPhone(){
         items.clear();
         Cursor cursor = getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
 
-        if(cursor != null){
-            while (cursor.moveToNext()){
-                TabOneRecyclerItem item = new TabOneRecyclerItem();
-                item.setName(cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)));
-                item.setPhonenum(cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                final TabOneRecyclerItem item = new TabOneRecyclerItem(facebook_id,
+                        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+                        cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)),
+                        cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)),
+                        "no_profile");
+                item.setDefault_profile_color(random_profile_color());
                 //연락처 포토 가져오기
                 //item.setProfile(BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.baseline_person_black_36dp));
                 items.add(item);
-                Collections.sort(items);
-
             }
+            Collections.sort(items);
         }
         cursor.close();
+    }
+
+    public int random_profile_color(){
+        return new Random().nextInt(profile_color_num);
     }
 
     /*public void checkPermission(){
@@ -287,4 +305,25 @@ public class TabOneFragment extends Fragment {
             }
         }
     }*/
+
+    public void makejson(ArrayList<TabOneRecyclerItem> list){
+        JSONObject object = new JSONObject();
+        try{
+            JSONArray jArray = new JSONArray();//배열이 필요할때
+            for (int i = 0; i < list.size(); i++)//배열
+            {
+                TabOneRecyclerItem item = list.get(i);
+                JSONObject sObject = new JSONObject();//배열 내에 들어갈 json
+                sObject.put("userid", item.getUserid());
+                sObject.put("contactid", item.getContactid());
+                sObject.put("name", item.getName());
+                sObject.put("phone_number", item.getPhone_number());
+                sObject.put("profile_pic", item.getProfile_pic());
+                jArray.put(sObject);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }

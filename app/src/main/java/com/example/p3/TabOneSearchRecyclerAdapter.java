@@ -1,6 +1,8 @@
 package com.example.p3;
 
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,8 +50,8 @@ public class TabOneSearchRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         TabOneRecyclerViewHolder tab1viewholder = (TabOneRecyclerViewHolder)holder;
         tab1viewholder.tv_name.setText(items.get(position).getName());
-        if(items.get(position).getProfile() != null)
-            tab1viewholder.circleImageView.setImageBitmap(BitmapFactory.decodeByteArray(items.get(position).getProfile(),0,items.get(position).getProfile().length));
+        if(!items.get(position).getProfile_pic().equals("no_profile"))
+            tab1viewholder.circleImageView.setImageBitmap(getBitmapFromString(items.get(position).getProfile_pic()));
         else
             tab1viewholder.circleImageView.setImageResource(return_profile_36(items.get(position).getDefault_profile_color()));
 
@@ -122,5 +124,11 @@ public class TabOneSearchRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
             default:
                 return R.drawable.person_icon_blue_36;
         }
+    }
+
+    private Bitmap getBitmapFromString(String stringPicture) {
+        byte[] decodedString = Base64.decode(stringPicture, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        return decodedByte;
     }
 }

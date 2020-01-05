@@ -5,12 +5,39 @@ import android.graphics.Bitmap;
 import java.io.Serializable;
 
 public class TabOneRecyclerItem implements Comparable<TabOneRecyclerItem>, Serializable {
+    private String userid;
+    private String contactid;
     private String name;
-    private String phonenum;
-    private byte[] profile;
+    private String phone_number;
+    private String profile_pic;
+    private String timestamps;
     private int default_profile_color = 0;
 
     public TabOneRecyclerItem(){
+    }
+
+    public TabOneRecyclerItem(String userid, String contactid, String name, String phone_number, String profile_pic){
+        this.userid = userid;
+        this.contactid = contactid;
+        this.name = name;
+        this.phone_number = phone_number;
+        this.profile_pic = profile_pic;
+    }
+
+    public String getUserid() {
+        return userid;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
+    }
+
+    public String getContactid() {
+        return contactid;
+    }
+
+    public void setContactid(String contactid) {
+        this.contactid = contactid;
     }
 
     public String getName() {
@@ -21,20 +48,20 @@ public class TabOneRecyclerItem implements Comparable<TabOneRecyclerItem>, Seria
         this.name = name;
     }
 
-    public String getPhonenum() {
-        return phonenum;
+    public String getPhone_number() {
+        return phone_number;
     }
 
-    public void setPhonenum(String phonenum) {
-        this.phonenum = phonenum;
+    public void setPhone_number(String phone_number) {
+        this.phone_number = phone_number;
     }
 
-    public byte[] getProfile() {
-        return profile;
+    public String getProfile_pic() {
+        return profile_pic;
     }
 
-    public void setProfile(byte[] profile) {
-        this.profile = profile;
+    public void setProfile_pic(String profile_pic) {
+        this.profile_pic = profile_pic;
     }
 
     public int getDefault_profile_color() {
@@ -44,7 +71,6 @@ public class TabOneRecyclerItem implements Comparable<TabOneRecyclerItem>, Seria
     public void setDefault_profile_color(int default_profile_color) {
         this.default_profile_color = default_profile_color;
     }
-
 
     @Override
     public int compareTo(TabOneRecyclerItem o) {
