@@ -28,8 +28,6 @@
 
         <activity android:name=".TabOneActivity"
             android:theme="@style/customstyle" ></activity>
-        <activity android:name=".Gallery"
-            android:theme="@style/customstyle" ></activity>
         <activity android:name=".SubActivity"/>
         <activity android:name=".TabOneSearchActivity"
             android:theme="@style/customstyle" ></activity>
@@ -48,6 +46,16 @@
 
         <service android:name=".TabThreeScreenService" />
         <receiver android:name=".TabThreeScreenReceiver" />
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepath" />
+        </provider>
     </application>
+
 
 </manifest>

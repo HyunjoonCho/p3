@@ -29,18 +29,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
+    private long backPressedTime;
+    private onBackPressedListener mOnBackPressedListener;
 
-
-    Button tab1;
-    Button tab2;
-    Button tab3;
     String[] permission_list = {
             Manifest.permission.WRITE_CONTACTS,
             Manifest.permission.READ_CONTACTS,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA,
-            //Manifest.permission.FOREGROUND_SERVICE,
             Manifest.permission.READ_PHONE_STATE
     };
 
@@ -51,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private TabOneFragment tabOneFragment = new TabOneFragment();
-    private TabTwoFragment tabTwoFragment = new TabTwoFragment();
+    private GalleryFragment tabTwoFragment = new GalleryFragment();
     private TabThreeFragment tabThreeFragment = new TabThreeFragment();
 
 
@@ -159,4 +156,36 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public interface onBackPressedListener {
+        void onBack();
+}
+
+    public void setOnBackPressedListener(@Nullable onBackPressedListener mListener) {
+        mOnBackPressedListener = mListener;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mOnBackPressedListener == null) {
+            if (backPressedTime == (long)0) {
+                Toast.makeText(this, "Exit when back pressed once more", Toast.LENGTH_SHORT).show();
+                backPressedTime = System.currentTimeMillis();
+            }
+            else {
+                long seconds = System.currentTimeMillis() - backPressedTime;
+
+                if (seconds > (long) 2000 ) {
+                    Toast.makeText(this, "Exit when back pressed once more", Toast.LENGTH_SHORT).show();
+                    backPressedTime = System.currentTimeMillis();
+                }
+                else {
+                    super.onBackPressed();
+                }
+            }
+
+        }
+        else {
+            mOnBackPressedListener.onBack();
+        }
+    }
 }
