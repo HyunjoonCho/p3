@@ -44,13 +44,10 @@
             android:theme="@style/actionbarstyle"/>
         <activity android:name=".TabOneUpdateActivity"
             android:theme="@style/actionbarstyle"/>
-        <activity android:name=".TabThreeLockScreenActivity"
-            android:theme="@style/AppTheme"/>
-        <activity android:name=".TabThreeCreateActivity"
-            android:theme="@style/AppTheme"/>
-
-        <service android:name=".TabThreeScreenService" />
-        <receiver android:name=".TabThreeScreenReceiver" />
+        <activity android:name=".TabThreeAddActivity"
+            android:theme="@style/actionbarstyle"/>
+        <activity android:name=".TabThreePopupActivity"
+            android:theme="@android:style/Theme.Dialog" />
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"

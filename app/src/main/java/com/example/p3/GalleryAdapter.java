@@ -1,7 +1,10 @@
 package com.example.p3;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +60,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     @Override
     public void onBindViewHolder(GalleryAdapter.ViewHolder holder, int position) {
         ImageData data = imgList.get(position);
-        holder.imgView.setImageURI(Uri.parse(data.imgPath));
+        holder.imgView.setImageBitmap(getBitmapFromString(data.getImage())); //여기
     }
 
     @Override
@@ -71,6 +74,12 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 
     public void setOnImgClickListener(OnImgClickListener listener) {
         this.imgClkListener = listener;
+    }
+
+    private Bitmap getBitmapFromString(String stringPicture) {
+        byte[] decodedString = Base64.decode(stringPicture, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        return decodedByte;
     }
 
 }

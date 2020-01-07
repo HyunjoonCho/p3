@@ -8,4 +8,5 @@
     <color name="tab3background">#a3cca3</color>
     <color name="white">#FFFFFF</color>
     <color name="contactscolor">#007FFF</color>
+    <color name="tab3titlecolor">#FFFFFF</color>
 </resources>

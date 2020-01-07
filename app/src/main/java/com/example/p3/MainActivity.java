@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -45,11 +46,13 @@ public class MainActivity extends AppCompatActivity {
     private final static int UPDATE_CONTACT = 2;
     private final static int UPDATE_CONTACT_FROM_RECORD = 20;
     private final static int DELETE_RESULT_CODE = 40;
+    private final static int CREATE_CODE = 500;
+    private final static int JOIN_CODE = 501;
 
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private TabOneFragment tabOneFragment;
     private GalleryFragment tabTwoFragment;
-    private TabThreeFragment tabThreeFragment = new TabThreeFragment();
+    private TabThreeFragment tabThreeFragment;
 
 
     @Override
@@ -59,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         tabOneFragment = new TabOneFragment(getIntent().getStringExtra("id"));
         tabTwoFragment = new GalleryFragment(getIntent().getStringExtra("id"));
+        tabThreeFragment = new TabThreeFragment(getIntent().getStringExtra("id"));
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.main_navigation_view);
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -91,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if(requestCode == CREATE_NEW_CONTACT){
             if(resultCode == RESULT_OK){
                 tabOneFragment.getMyAdapter().getItems().add((TabOneRecyclerItem)data.getSerializableExtra("item"));
@@ -113,12 +118,17 @@ public class MainActivity extends AppCompatActivity {
             int pos = data.getIntExtra("position",1);
             tabOneFragment.getMyAdapter().getItems().remove(pos);
             tabOneFragment.getMyAdapter().notifyDataSetChanged();
-        }else if (requestCode == 100) {
-            if (resultCode == RESULT_OK) {
-                tabThreeFragment.getmAdapter().gettData().add((TabThreeItem)data.getSerializableExtra("item"));
-                tabThreeFragment.getmAdapter().notifyDataSetChanged();
-                tabThreeFragment.getmAdapter().save_list(getApplicationContext());
+        }else if(requestCode == JOIN_CODE && resultCode == RESULT_OK && data != null) {
+            if(!data.getBooleanExtra("isregistered",false)) {
+                tabThreeFragment.setIsregister(data.getBooleanExtra("isregistered", false));
+                tabThreeFragment.getMyAdapter().removeid(data.getIntExtra("position",0));
+            }else{
+                tabThreeFragment.setRegister_position(data.getIntExtra("position", 0));
+                tabThreeFragment.getMyAdapter().addid(data.getIntExtra("position",0));
             }
+            //소켓에서 데이터 받아서 갱신
+        }else if(requestCode == CREATE_CODE && resultCode == RESULT_OK && data != null){
+            tabThreeFragment.setRegister_position(tabThreeFragment.getMyAdapter().gettData().size()-1);
         }
     }
 

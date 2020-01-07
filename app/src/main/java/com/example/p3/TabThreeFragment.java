@@ -1,17 +1,23 @@
 package com.example.p3;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,143 +25,130 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import com.scrollablelayout.ScrollableLayout;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.reflect.Type;
+import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
 
 public class TabThreeFragment extends Fragment {
 
-    Intent service_intent = null;
-    RecyclerView mRecyclerView = null;
-    TabThreeRecyclerAdapter mAdapter = null;
-    ArrayList<TabThreeItem> mList = new ArrayList();
-    public Switch main_switch;
-    private boolean is_main_switch_on = false;
-    private final static int REQUEST_TEST = 100;
+    private TabThreeRecyclerAdapter myAdapter;
+    private String facebook_id;
+    public static boolean isregister = false;
+    public static int register_position;
+    private final static int CREATE_CODE = 500;
+    private final static int JOIN_CODE = 501;
+    private ConstraintLayout pick_layout;
+    private Socket mSocket;
+    private final static String TAG = "tab3addactivity";
 
-    class SwitchListener implements CompoundButton.OnCheckedChangeListener {
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            if(is_main_switch_on)
-                service_intent = new Intent(getActivity(), TabThreeScreenService.class);
-            main_swtich_save(isChecked);
-            is_main_switch_on = isChecked;
-
-            if (isChecked) {
-                if(service_intent == null) {
-                    service_intent = new Intent(getActivity(), TabThreeScreenService.class);
-                    service_intent.putExtra("turnoff", 1);
-                    if (Build.VERSION.SDK_INT >= 26)
-                        getActivity().startForegroundService(service_intent);
-                    else
-                        getActivity().startService(service_intent);
-                }
-            } else {
-                if(service_intent != null) {
-                    service_intent.putExtra("turnoff", 2);
-                    getActivity().stopService(service_intent);
-                    service_intent = null;
-                }
-            }
-        }
-    }
+    public TabThreeFragment(String facebook_id){ this.facebook_id = facebook_id; }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab3_main, container, false);
-        //setTheme(android.R.style.Theme_NoTitleBar);
 
-        main_switch = rootView.findViewById(R.id.tab3_main_switch);
-        is_main_switch_on = main_switch_load();
-        main_switch.setChecked(is_main_switch_on);
-
-        Gson gson = new GsonBuilder().create();
-        Type listType = new TypeToken<ArrayList<TabThreeItem>>() {}.getType();
-        SharedPreferences sp = getActivity().getSharedPreferences("TabThreeItemList", MODE_PRIVATE);
-        String mList_json = sp.getString("TabThreeItemList", "");
-
-
-
-        if(!mList_json.equals(""))
-            mList = gson.fromJson(mList_json, listType);
-        else {
-            addItem(false, "전여친한테 전화하지마!");
-            addItem(false, "Stay...");
-            addItem(false, "이불킥 또 하게?");
-
-            mList_json = gson.toJson(mList,listType);
-            sp = getActivity().getSharedPreferences("TabThreeItemList",MODE_PRIVATE);
-            SharedPreferences.Editor editor = sp.edit();
-            editor.putString("TabThreeItemList", mList_json);
-            editor.commit();
+        try {
+            mSocket = IO.socket("http://192.249.19.251:8780");
+            mSocket.on(Socket.EVENT_CONNECT, (Object... objects) -> {
+                mSocket.emit("clientMessage","HI");
+            }).on("serverMessage",(Object... objects) -> { //다른사람은 false로 하고 answer도 보내줘야함
+                JsonParser jsonParsers = new JsonParser();
+                JsonObject probleminfo = (JsonObject) jsonParsers.parse(objects[0] + "");
+                Log.d("probleminfo", probleminfo.toString());
+                getView().invalidate();
+                myAdapter.notify_adapter();
+            });
+            mSocket.connect();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        mRecyclerView = rootView.findViewById(R.id.tab3_recycler);
-        mAdapter = new TabThreeRecyclerAdapter(mList);
 
-        mAdapter.setOnItemClickListener(new TabThreeRecyclerAdapter.OnItemClickListener() {
+        ScrollableLayout scrollableLayout = rootView.findViewById(R.id.tab3_main_nsv);
+        RecyclerView myRecycler =  rootView.findViewById(R.id.tab3_main_recycler);
+        pick_layout = rootView.findViewById(R.id.tab3_pick_layout);
+
+        scrollableLayout.getHelper().setCurrentScrollableContainer(myRecycler);
+
+        myAdapter = new TabThreeRecyclerAdapter(rootView,facebook_id);
+
+        myAdapter.setOnItemClickListener(new TabThreeRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                mAdapter.gettData().get(position).setIcon(!mAdapter.gettData().get(position).getIcon());
-                mAdapter.notifyDataSetChanged();
-                if(mAdapter.isAlloff() && is_main_switch_on){
-                    is_main_switch_on = false;
-                    main_switch.setChecked(false);
-                    main_swtich_save(false);
-                }
-                Gson gson = new GsonBuilder().create();
-                Type listType = new TypeToken<ArrayList<TabThreeItem>>() {}.getType();
-                String mList_json = gson.toJson(mAdapter.gettData(),listType);
-                SharedPreferences sp = getActivity().getSharedPreferences("TabThreeItemList",MODE_PRIVATE);
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putString("TabThreeItemList", mList_json);
-                editor.commit();
+                Intent intent = new Intent(getActivity().getApplicationContext(), TabThreePopupActivity.class);
+                intent.putExtra("isregistered",isregister);
+                intent.putExtra("position",position);
+                intent.putExtra("namelist",(ArrayList)myAdapter.gettData().get(position).getUserid());
+                getActivity().startActivityForResult(intent,JOIN_CODE);
             }
         });
 
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mAdapter.notifyDataSetChanged();
-
-        main_switch.setOnCheckedChangeListener(new SwitchListener());
-
-        FloatingActionButton fabbtn = rootView.findViewById(R.id.tab3_fab);
-        fabbtn.setOnClickListener(new View.OnClickListener() {
+        pick_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), TabThreeCreateActivity.class);
-                getActivity().startActivityForResult(intent, REQUEST_TEST);
+                if(myAdapter.gettData().size() != 0) {
+                    Intent intent = new Intent(getActivity().getApplicationContext(), TabThreePopupActivity.class);
+                    intent.putExtra("isregistered", isregister);
+                    intent.putExtra("position", register_position);
+                    intent.putExtra("namelist", (ArrayList) myAdapter.gettData().get(register_position).getUserid());
+                    getActivity().startActivityForResult(intent, JOIN_CODE);
+                }
+            }
+        });
+
+        myRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+        myRecycler.setAdapter(myAdapter);
+
+        myAdapter.notifyDataSetChanged();
+
+
+        rootView.findViewById(R.id.tab3_title_img2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity().getApplicationContext(),TabThreeAddActivity.class);
+                i.putExtra("id",facebook_id);
+                i.putExtra("isregistered",isregister);
+                getActivity().startActivityForResult(i,CREATE_CODE);
             }
         });
 
         return rootView;
     }
 
-    public void addItem(Boolean b2, String text){
-        TabThreeItem item = new TabThreeItem();
-        item.setIcon(b2);
-        item.setWarning(text);
-
-        mList.add(item);
+    public void setRegister_position(int register_position) {
+        this.register_position = register_position;
+        this.isregister = true;
     }
 
-    public void main_swtich_save(boolean ischecked){
-        SharedPreferences sharePref = getActivity().getSharedPreferences("TabThreeMainSwitch",MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharePref.edit();
-        editor.putBoolean("mainswitch",ischecked);
-        editor.commit();
+    public void setIsregister(boolean isregister) {
+        this.isregister = isregister;
     }
 
-    public boolean main_switch_load(){
-        SharedPreferences sharePref = getActivity().getSharedPreferences("TabThreeMainSwitch",MODE_PRIVATE);
-        return sharePref.getBoolean("mainswitch",false);
+    public TabThreeRecyclerAdapter getMyAdapter() {
+        return myAdapter;
     }
 
-    public TabThreeRecyclerAdapter getmAdapter() {
-        return mAdapter;
-    }
 }

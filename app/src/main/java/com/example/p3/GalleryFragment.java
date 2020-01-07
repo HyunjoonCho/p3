@@ -4,11 +4,15 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +33,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import java.io.File;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class GalleryFragment extends Fragment implements MainActivity.onBackPressedListener {
 
@@ -44,6 +55,7 @@ public class GalleryFragment extends Fragment implements MainActivity.onBackPres
     private TextView infoText;
     private LinearLayout buttonLayout;
     private String facebook_id;
+    private ArrayList<ImageData> image_list = new ArrayList<>();
 
     public GalleryFragment(String facebook_id){this.facebook_id = facebook_id;}
 
@@ -121,24 +133,18 @@ public class GalleryFragment extends Fragment implements MainActivity.onBackPres
 
 
     private void setRecyclerView() {
-        final ArrayList<ImageData> list = getPathOfAllImages();
+        getPathOfAllImages();
 
         RecyclerView rcView = view.findViewById(R.id.recyclerView);
         rcView.setItemViewCacheSize(20);
         rcView.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
-        GalleryAdapter adapter = new GalleryAdapter(list);
+        GalleryAdapter adapter = new GalleryAdapter(image_list);
         adapter.setOnImgClickListener(new GalleryAdapter.OnImgClickListener() {
             @Override
             public void onImgClick(ImageData image) {
-                bigImg.setImageURI(Uri.parse(image.imgPath));
-                bigImg.setContentDescription(image.imgPath);
-                infoText.setText(new String().concat("Image Name: ")
-                        .concat(image.imgName)
-                        .concat("\n\nImage Path: ")
-                        .concat(image.imgPath)
-                        .concat("\n\nImage Size: ")
-                        .concat(image.imgSize));
+                bigImg.setImageBitmap(getBitmapFromString(image.getImage()));
+                //bigImg.setContentDescription(image.imgPath);
                 buttonLayout.setVisibility(View.VISIBLE);
                 bigView.setVisibility(View.VISIBLE);
                 ((MainActivity)requireContext()).setOnBackPressedListener(p2me);
@@ -147,7 +153,7 @@ public class GalleryFragment extends Fragment implements MainActivity.onBackPres
         rcView.setAdapter(adapter);
     }
 
-    private ArrayList<ImageData> getPathOfAllImages() {
+    private ArrayList<ImageData> getPathOfAllImagesFromPhone() {
 
         ArrayList<ImageData> result = new ArrayList<>();
         Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
@@ -164,11 +170,29 @@ public class GalleryFragment extends Fragment implements MainActivity.onBackPres
             String imgName = imgCursor.getString(2);
             String imgSize = imgCursor.getString(3);
             if (!TextUtils.isEmpty(absPath)) {
-                result.add(new ImageData(absPath, imgName, imgSize));
+                result.add(new ImageData(facebook_id, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),absPath, imgName));
             }
         }
 
         return result;
+    }
+
+    private void getPathOfAllImages() {
+
+        NetworkHelper.getApiService().getImagesByUserid(facebook_id).enqueue(new Callback<List<ImageData>>() {
+            @Override
+            public void onResponse(Call<List<ImageData>> call, Response<List<ImageData>> response) {
+                List<ImageData> imageData = response.body();
+                for(int i = 0; i < imageData.size(); i++){
+                    image_list.add(new ImageData(facebook_id, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),imageData.get(i).getImage(), imageData.get(i).imgName));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ImageData>> call, Throwable t) {
+                Log.e("error",t.getMessage());
+            }
+        });
     }
 
     @Override
@@ -194,5 +218,11 @@ public class GalleryFragment extends Fragment implements MainActivity.onBackPres
             buttonLayout.setVisibility(View.GONE);
             ((MainActivity)requireContext()).setOnBackPressedListener(null);
         }
+    }
+
+    private Bitmap getBitmapFromString(String stringPicture) {
+        byte[] decodedString = Base64.decode(stringPicture, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        return decodedByte;
     }
 }

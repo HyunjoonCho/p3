@@ -9,29 +9,58 @@
     android:padding="7dp">
 
     <TextView
-        android:id="@+id/tab3_text"
+        android:id="@+id/tab3_item_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:text="술 드쉬는중?"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="6dp"
+        android:text="밥먹으러가실분?"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tab3_item_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="13dp"
+        android:text="16:40"
+        android:textSize="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tab3_item_title" />
+
+    <TextView
+        android:id="@+id/tab3_item_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="16dp"
+        android:text="4명"
+        android:textColor="#000000"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.47" />
-
-    <Switch
-        android:id="@+id/tab3_switch"
-        android:layout_width="82dp"
-        android:layout_height="22dp"
-        android:checked="false"
-        android:switchMinWidth="45dp"
-        android:text=""
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.956"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.451" />
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/tab3_item_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="16dp"
+        android:text="모집중"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tab3_item_count" />
+
+    <TextView
+        android:id="@+id/tab3_item_place"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="13dp"
+        android:text="안동시"
+        android:textSize="15dp"
+        app:layout_constraintStart_toEndOf="@+id/tab3_item_time"
+        app:layout_constraintTop_toBottomOf="@+id/tab3_item_title" />
 </androidx.constraintlayout.widget.ConstraintLayout>

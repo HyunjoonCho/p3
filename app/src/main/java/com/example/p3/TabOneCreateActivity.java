@@ -154,7 +154,8 @@ public class TabOneCreateActivity extends AppCompatActivity {
                     NetworkHelper.getApiService().postContract(item.getUserid(),item.getContactid(),item.getName(),item.getPhone_number(),item.getProfile_pic()).enqueue(new Callback<TabOneRecyclerItem>() {
                         @Override
                         public void onResponse(Call<TabOneRecyclerItem> call, Response<TabOneRecyclerItem> response) {
-                            Log.e("posted",response.body().getName());
+                            Log.e("FB id","What : "+facebook_id);
+                            Log.e("posted","What : "+response.body().getName());
                             Intent intent = new Intent();
                             intent.putExtra("item",item);
                             setResult(RESULT_OK,intent);

@@ -32,4 +32,23 @@ public interface ApiService {
 
     @DELETE("/contacts/contactid/{contactid}")
     Call<String> deleteContract(@Path("contactid") String contactid);
+
+    @GET("/contacts/userid/{userid}")
+    Call<List<ImageData>> getImagesByUserid(@Path("userid") String userid);
+
+    @GET("/gatherings")
+    Call<List<TabThreeItem>> getGatherings();
+
+    @FormUrlEncoded
+    @POST("/gatherings")
+    Call<TabThreeItem> postGatherings(@Field("userid") String userid, @Field("gatheringid") String gatheringid, @Field("destination") String destination, @Field("expireAt") String expireAt,@Field("departure") String departure, @Field("count") String count);
+
+    @POST("/gatherings")
+    Call<TabThreeItem> postGatherings(@Body TabThreeItem tabThreeItem);
+
+    @DELETE("/gatherings/gatheringid/{gatheringid}")
+    Call<String> deleteGatherings(@Path("gatheringid") String gatheringid);
+
+    @PUT("/gatherings/gatheringid/{gatheringid}")
+    Call<TabThreeItem> putGatherings(@Path("gatheringid") String gatheringid, @Body TabThreeItem item);
 }

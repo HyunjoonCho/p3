@@ -6,76 +6,198 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:foreground="?attr/selectableItemBackground"
     android:padding="7dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/CL_child"
+    <com.scrollablelayout.ScrollableLayout
+        android:id="@+id/tab3_main_nsv"
         android:layout_width="0dp"
-        android:layout_height="72dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_height="0dp"
+        android:paddingTop="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tab3_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Are you drunk?"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/tab3_main_switch"
-            app:layout_constraintHorizontal_bias="0.074"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.509" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/CL_child"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <Switch
-            android:id="@+id/tab3_main_switch"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/tab3_main_msg"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:text="카이풀"
+                android:textColor="#000000"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/CL_child"
+                app:layout_constraintStart_toStartOf="@+id/CL_child"
+                app:layout_constraintTop_toBottomOf="@+id/tab3_cardview" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/tab3_main_guideline_h1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="45dp" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/tab3_cardview"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+                android:background="@color/tab3titlecolor"
+                app:layout_constraintBottom_toTopOf="@+id/tab3_main_guideline_h1"
+                app:layout_constraintEnd_toEndOf="@+id/CL_child"
+                app:layout_constraintStart_toStartOf="@+id/CL_child"
+                app:layout_constraintTop_toTopOf="@+id/CL_child">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/tab3titlecolor">
+
+                    <ImageButton
+                        android:id="@+id/tab3_title_drawerbtn"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@color/tab3titlecolor"
+                        android:contentDescription="@string/tab1_image"
+                        android:foreground="?attr/selectableItemBackground"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/tab3_title_guideline_v1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/outline_search_black_24" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/tab3_title_guideline_v1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.33" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/tab3_title_guideline_v2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_begin="258dp" />
+
+                    <ImageButton
+                        android:id="@+id/tab3_title_img2"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@color/tab3titlecolor"
+                        android:contentDescription="@string/tab1_image"
+                        android:foreground="?attr/selectableItemBackground"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/tab3_title_guideline_v2"
+                        app:layout_constraintStart_toEndOf="@+id/tab3_title_drawerbtn"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/outline_add_box_black_24" />
+
+                    <ImageButton
+                        android:id="@+id/tab3_title_img3"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@color/tab3titlecolor"
+                        android:contentDescription="@string/tab1_image"
+                        android:foreground="?attr/selectableItemBackground"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/tab3_title_guideline_v2"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/baseline_group_add_black_24" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/tab3_pick_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:checked="false"
-            android:switchMinWidth="60dp"
+            android:background="@drawable/tab3_pick_boundary"
+            android:foreground="?attr/selectableItemBackground"
+            android:padding="7dp">
+
+            <TextView
+                android:id="@+id/tab3_pick_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="6dp"
+                android:text="밥먹으러가실분?"
+                android:textColor="#000000"
+                android:textSize="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tab3_pick_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="13dp"
+                android:text="16:40"
+                android:textSize="15dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tab3_pick_title" />
+
+            <TextView
+                android:id="@+id/tab3_pick_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="16dp"
+                android:text="4명"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tab3_pick_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:layout_marginEnd="16dp"
+                android:text="모집중"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tab3_pick_count" />
+
+            <TextView
+                android:id="@+id/tab3_pick_place"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="13dp"
+                android:text="안동시"
+                android:textSize="15dp"
+                app:layout_constraintStart_toEndOf="@+id/tab3_pick_time"
+                app:layout_constraintTop_toBottomOf="@+id/tab3_pick_title" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/tab3_main_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.511" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintStart_toStartOf="parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/tab3_recycler"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.487"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/CL_child">
-
-    </androidx.recyclerview.widget.RecyclerView>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/tab3_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
-        android:clickable="true"
-        app:backgroundTint="@color/contactscolor"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.954"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.976"
-        app:srcCompat="@drawable/baseline_add_white_24dp" />
+        </androidx.recyclerview.widget.RecyclerView>
+    </com.scrollablelayout.ScrollableLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

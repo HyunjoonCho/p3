@@ -74,6 +74,7 @@ public class TabOneFragment extends Fragment {
     private String facebook_id;
     private int profile_color_num = 8;
 
+
     public TabOneFragment(String facebook_id){this.facebook_id = facebook_id; }
     public TabOneRecyclerAdapter getMyAdapter() {
         return myAdapter;
