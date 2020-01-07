@@ -49,11 +49,6 @@ public class LoginActivity extends AppCompatActivity{
 
         checkPermission();
 
-        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-        intent.putExtra("id","1788850951249840");
-        startActivity(intent);
-        finish();
-
         callbackManager = CallbackManager.Factory.create();
         btn_facebook_login = (LoginButton) findViewById(R.id.btn_facebook_login);
         btn_facebook_login.setReadPermissions(Arrays.asList("public_profile", "email"));
@@ -92,9 +87,9 @@ public class LoginActivity extends AppCompatActivity{
                         Log.e("result",object.toString());
                         try {
                             facebook_id = object.getString("id");
-                            /*Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                             intent.putExtra("id",facebook_id);
-                            startActivity(intent);*/
+                            startActivity(intent);
                         }catch (Exception e){
                             e.printStackTrace();
                         }

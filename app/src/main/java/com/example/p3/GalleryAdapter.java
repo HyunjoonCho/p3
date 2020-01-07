@@ -1,19 +1,20 @@
 package com.example.p3;
 
 import android.content.Context;
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
 
-    private ArrayList<ImageData> imgList = null;
+    private ArrayList<TabTwoRecyclerItem> imgList = null;
     private OnImgClickListener imgClkListener = null;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -38,7 +39,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         }
     }
 
-    GalleryAdapter (ArrayList<ImageData> list) {
+    GalleryAdapter (ArrayList<TabTwoRecyclerItem> list) {
         imgList = list ;
     }
 
@@ -56,8 +57,13 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(GalleryAdapter.ViewHolder holder, int position) {
-        ImageData data = imgList.get(position);
-        holder.imgView.setImageURI(Uri.parse(data.imgPath));
+        TabTwoRecyclerItem data = imgList.get(position);
+        holder.imgView.setImageBitmap(getBitmapFromString(data.getImage()));
+    }
+    private Bitmap getBitmapFromString(String stringPicture) {
+        byte[] decodedString = Base64.decode(stringPicture, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        return decodedByte;
     }
 
     @Override
@@ -66,7 +72,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     }
 
     public interface OnImgClickListener {
-        void onImgClick(ImageData image);
+        void onImgClick(TabTwoRecyclerItem image);
     }
 
     public void setOnImgClickListener(OnImgClickListener listener) {
