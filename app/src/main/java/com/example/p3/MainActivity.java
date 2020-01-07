@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.facebook.login.LoginManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
@@ -155,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
                     backPressedTime = System.currentTimeMillis();
                 }
                 else {
+                    LoginManager.getInstance().logOut();
                     super.onBackPressed();
                 }
             }

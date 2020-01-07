@@ -10,7 +10,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 public class NetworkHelper {
     private static Retrofit retrofit = null;
     private static ApiService apiService = null;
-    public static final String API_URL = "http://192.249.19.251:8780";
+    public static final String API_URL = "http://192.249.19.251:9980";
     static Gson gson = new GsonBuilder()
             .setLenient()
             .create();

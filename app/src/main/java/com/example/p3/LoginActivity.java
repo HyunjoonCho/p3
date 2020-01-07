@@ -49,10 +49,6 @@ public class LoginActivity extends AppCompatActivity{
 
         checkPermission();
 
-        /*Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-        intent.putExtra("id","1788850951249840");
-        startActivity(intent);*/
-
         callbackManager = CallbackManager.Factory.create();
         btn_facebook_login = (LoginButton) findViewById(R.id.btn_facebook_login);
         btn_facebook_login.setReadPermissions(Arrays.asList("public_profile", "email"));
